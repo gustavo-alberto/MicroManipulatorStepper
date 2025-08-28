@@ -1,0 +1,20 @@
+
+--- Mechanics -------------------------------------------------------------------
+
+  Qty.   Name                             Size                      Comments
+						                
+* 12     Steel ball                     D=1.25mm (0.05")            Precision of G10 or better.
+							             							Can be sourced from small ball bearings
+							             								
+* 1m     PU stretch cord                D=1mm                       e.g. 'Stretch Magic' or 'Magic String'
+						                
+* 70     Neodym Cylinder Magnet         D=3mm h=4mm
+
+* 1m     Brass Pipe						OD=2mm ID=1mm
+						                
+* 12     M2 Screw                       M2x12mm, Counsersunk
+						                
+* 6      M3 Grub Screw                  M3x4
+
+--- Electronics -------------------------------------------------------------------
+
