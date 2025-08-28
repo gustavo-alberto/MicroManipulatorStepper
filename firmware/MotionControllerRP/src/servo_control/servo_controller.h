@@ -50,14 +50,15 @@ class ServoController {
     float motor_pos_to_field_angle(float motor_pos);
     float motor_velocity_to_field_velocity(float v);
 
+  public:
+    LowpassFilter velocity_lowpass;
+    PIDController pos_controller;
+    PIDController velocity_controller;
+
   private:
     ENCODER_TYPE& encoder;
     MOTOR_DRIVER_TYPE& motor_driver;
     LookupTable enc_to_pos_lut;
-
-    LowpassFilter velocity_lowpass;
-    PIDController pos_controller;
-    PIDController velocity_controller;
 
     float motor_pos = 0;                  // current motor position
     float motor_pos_prev = 0;             // previous motor position

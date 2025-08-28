@@ -13,7 +13,7 @@ class IKinemtaicModel;
 
 class PathPlanner {
   public:
-    static constexpr int CT_QUEUE_SIZE = 64;
+    static constexpr int CT_QUEUE_SIZE = 32;
     static constexpr int JS_QUEUE_SIZE = 32;
     
   public:
@@ -25,6 +25,10 @@ class PathPlanner {
 
     // adds a new cartesian space path segment to the planner queue
     bool add_cartesian_path_segment(const CartesianPathSegment& path_segment);
+
+    // runs look ahead path planning. call this everytime after one or more cartesian
+    // path segments have been added
+    void run_look_ahead_planning();
 
     // Retrieves the next joint space path segment from the queue, returns false
     // if queue is empty.
@@ -44,7 +48,13 @@ class PathPlanner {
     int input_queue_size();
 
   private:
-    void run_look_ahead_planning();
+    float compute_max_junction_velocity(
+      const Vec3F& dir_in_normalized, 
+      const Vec3F& dir_out_normalized, 
+      float acceleration, 
+      float junction_deviation);
+
+    void print_cartesian_path_segments();
 
   private:
     RingBuffer<CartesianPathSegment, CT_QUEUE_SIZE> ct_path_segment_queue;
@@ -53,5 +63,6 @@ class PathPlanner {
     IKinemtaicModel* kinematic_model;
     JointSpacePathSegmentGenerator* segment_generator = nullptr;
     float segment_time_step;
+    LinearAngular junction_deviation;
 };
 

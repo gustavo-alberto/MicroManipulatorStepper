@@ -88,8 +88,9 @@ Robot::Robot(float path_segment_time_step) :
 
   command_parser.set_command_processor(this);
 
+  current_feedrate = LinearAngular(10.0f, 1.0f);
   max_acceleration = LinearAngular(500.0f, 50.0f);
-  path_buffering_time_us = 100*1000;
+  path_buffering_time_us = 50*1e3;
 
   state = ERobotState::IDLE;
 }
@@ -183,6 +184,13 @@ void Robot::update_command_parser() {
 
   // update command parse which will queue command to the path planner
   command_parser.update();
+
+  // TESTING:
+  //sleep_ms(10);
+  //float pos_error = joints[1]->servo_controller->get_position_error();
+  //LOG_INFO(">pos_error [µrad]: %f\n", pos_error*1e6);
+  //Serial.printf(">pos_error [µrad]: %f\n", pos_error*1e6);#
+  //LOG_INFO(">pos_x [mm]: %f", joints[1]->position);
 }
 
 /**
@@ -194,15 +202,14 @@ void Robot::update_path_planner() {
   // check if buffering starts
   uint64_t time = time_us_64();
   if(state == ERobotState::IDLE && path_planner.input_queue_size() > 0) {
-    state = ERobotState::BUFFERING_PAH;
+    state = ERobotState::BUFFERING_PATH;
     path_buffering_start_time = time;
   }
 
   // check if execution starts
   uint64_t buffering_time = time-path_buffering_start_time;
-  if(state == ERobotState::BUFFERING_PAH && buffering_time > path_buffering_time_us) {
+  if(state == ERobotState::BUFFERING_PATH && buffering_time > path_buffering_time_us) {
     state = ERobotState::EXECUTING_PATH;
-    path_buffering_start_time = time_us_64();
   }
 
   // execute path
@@ -287,6 +294,7 @@ void Robot::send_reply(const char* str) {
 
 void Robot::process_command(const GCodeCommand& cmd, std::string& reply) {
   if(cmd.get_command() == "G0") process_motion_command(cmd, reply);
+  else if(cmd.get_command() == "G1") process_motion_command(cmd, reply);
   else if(cmd.get_command() == "G4") process_dwell_command(cmd, reply);
   else if(startswith(cmd.get_command(), "M")) process_machine_command(cmd, reply);
   else reply="error: unknown command\n";
@@ -295,9 +303,17 @@ void Robot::process_command(const GCodeCommand& cmd, std::string& reply) {
 void Robot::process_motion_command(const GCodeCommand& cmd, std::string& reply) {
   Pose6DF end_pose;
 
+  if(path_planner.input_queue_full()) {
+    reply = "error: input queue full\n";
+    return;
+  }
+
   // read feed rate
-  float feed_linear = cmd.get_value('F', 10.0f);
-  float feed_angular = cmd.get_value('R', 1.0f);
+  current_feedrate.linear = cmd.get_value('F', current_feedrate.linear);
+  current_feedrate.angular = cmd.get_value('R', current_feedrate.angular);
+
+  if(cmd.has_word('I'))
+    state = ERobotState::EXECUTING_PATH;
 
   // read translation
   end_pose.translation.x = cmd.get_value('X', current_pose.translation.x);
@@ -314,33 +330,54 @@ void Robot::process_motion_command(const GCodeCommand& cmd, std::string& reply) 
 
   // create path segment
   CartesianPathSegment path_segment(current_pose, end_pose, 
-                                    LinearAngular(feed_linear, feed_angular), 
+                                    current_feedrate, 
                                     max_acceleration);
 
-  path_planner.add_cartesian_path_segment(path_segment);
-  current_pose = end_pose;
-
-  reply = "ok\n";
+  bool ok = path_planner.add_cartesian_path_segment(path_segment);
+  if(ok) {
+    path_planner.run_look_ahead_planning();
+    current_pose = end_pose;
+    reply = "ok\n";
+  } else {
+    reply = "error\n";
+  }
 }
 
 void Robot::process_machine_command(const GCodeCommand& cmd, std::string& reply) {
+  reply = "";
+  
   if(cmd.get_command() == "M50") {
-    reply = "Current Position: ";
+    reply += "Current Position: ";
     reply += std::string(" X") + std::to_string(current_pose.translation.x);
     reply += std::string(" Y") + std::to_string(current_pose.translation.y);
     reply += std::string(" Z") + std::to_string(current_pose.translation.z);
     reply += "\n";
+    reply = "ok\n";
   }
   if(cmd.get_command() == "M51") {
     uint32_t servo_loop_freq = servo_loop_frequency_counter.get();
     uint32_t mcontroler_freq = motion_controller_frequency_counter.get();
     reply += std::string("Servo Loop: ") + std::to_string(servo_loop_freq/1000) + "kHz\n";
     reply += std::string("Motion Controler: ") + std::to_string(mcontroler_freq/1000) + "kHz\n";
+    reply += "ok\n";
+  }
+  if(cmd.get_command() == "M52") {
+    int s = path_planner.input_queue_size();
+    reply += std::string("Queue Size: ") + std::to_string(s) + "\n";
+    reply += "ok\n";
+  }
+  if(cmd.get_command() == "M53") {
+    bool f = path_planner.all_finished();
+    reply += f ? "1\n" : "0\n";
+    reply += "ok\n";
+  }
+  if(cmd.get_command() == "M55") {
+    process_set_servo_parameter_command(cmd, reply);
   }
   if(cmd.get_command() == "M204") {
-
     if(cmd.has_word('L')) max_acceleration.linear = cmd.get_value('L');
     if(cmd.has_word('A')) max_acceleration.angular = cmd.get_value('A');
+    reply += "ok\n";
   }
 }
 
@@ -353,8 +390,26 @@ void Robot::process_dwell_command(const GCodeCommand& cmd, std::string& reply) {
   // create path segment
   CartesianPathSegment path_segment(current_pose, dwell_time);
   path_planner.add_cartesian_path_segment(path_segment);
+  path_planner.run_look_ahead_planning();
 
   reply = "ok\n";
 }
 
+void Robot::process_set_servo_parameter_command(const GCodeCommand& cmd, std::string& reply) {
+  // example: M55 A150 B50000 C0.2 D100 E F0.0025
+  bool has_all = cmd.has_word('A') && cmd.has_word('B') && cmd.has_word('C') && 
+                 cmd.has_word('D') && cmd.has_word('F');
+
+  if(has_all == false)
+    reply = "error: not all parameters given (A,B,C,D,F expected)\n";
+
+  for(int i=0; i<NUM_JOINTS; i++) {
+
+    joints[i]->servo_controller->velocity_lowpass.set_time_constant(cmd.get_value('F'));
+    joints[i]->servo_controller->pos_controller.set_parameter(cmd.get_value('A'), cmd.get_value('B'), 0.0f, Constants::PI_F*2.0F, Constants::PI_F*0.5F);
+    joints[i]->servo_controller->velocity_controller.set_parameter(cmd.get_value('C'), cmd.get_value('D'), 0.0f, Constants::PI_F*0.45f, Constants::PI_F*0.45f);
+  }
+
+  reply = "ok\n";
+}
 

@@ -145,6 +145,7 @@ class MT6835Encoder {
 
       float read_abs_angle();                         // returns the absolute angle in radians
       AbsRawAngleType read_abs_angle_raw();           // returns the absolute angle in raw counts
+      AbsRawAngleType get_last_abs_raw_angle();       // returns the last read abs raw angle
 
       int32_t get_rawcounts_per_rev();                // returns the number of raw counts per revolution
 

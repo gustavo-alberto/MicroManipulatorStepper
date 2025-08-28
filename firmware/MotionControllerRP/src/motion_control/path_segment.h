@@ -64,7 +64,6 @@ class CartesianPathSegment {
 
     void evaluate(float time, Pose6DF& pose) const;
     float get_duration() const;
-
     void compute_motion_profile();
 
   public:
@@ -75,6 +74,10 @@ class CartesianPathSegment {
     LinearAngular target_velocity;
     LinearAngular end_velocity;
     LinearAngular max_acceleration;
+
+    LinearAngular max_velocity_delta;
+    Vec3F translation_delta_normalized;
+    //Vec3F rotation_delta_axis;
 
     LinearAngular travel_distance;
     MotionProfileConstAcc motion_profile;
@@ -121,8 +124,9 @@ class JointSpacePathSegmentGenerator {
       float time_step
     );
 
-    void reset();
-    bool generate_next(JointSpacePathSegment& js_path_segment);
+    void                        reset();
+    bool                        generate_next(JointSpacePathSegment& js_path_segment);
+    const CartesianPathSegment* get_path_segment() const;
 
   private:
     float delta_time;                     // time step size

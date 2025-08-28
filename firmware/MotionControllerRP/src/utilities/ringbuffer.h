@@ -33,6 +33,11 @@ class RingBuffer {
       return &(buffer[tail]);
     }
 
+    T* get(int i) {
+        if (count == 0) return nullptr;
+        return &(buffer[(tail + i) % N]);
+    }
+
     bool empty() const { return count == 0; }
     bool full() const { return count == N; }
     int size() const { return count; }

@@ -21,17 +21,15 @@ MotionProfileConstAcc::MotionProfileConstAcc(
     float max_velocity,
     float max_acceleration)
 {
-  MotionProfileConstAcc::acceleration = max_acceleration;
-  MotionProfileConstAcc::v_start = v_start;
-  MotionProfileConstAcc::v_end = v_end;
-
   if (distance <= 1e-7f) {
     MotionProfileConstAcc::t1 = 0.0f;
     MotionProfileConstAcc::t2 = 0.0f;
     MotionProfileConstAcc::t3 = 0.0f;
     MotionProfileConstAcc::d1 = 0.0f;
     MotionProfileConstAcc::d2 = 1.0f;
+    MotionProfileConstAcc::v_start = 0.0;
     MotionProfileConstAcc::v_peak = 0.0f;
+    MotionProfileConstAcc::v_end = 0.0;
     MotionProfileConstAcc::acceleration = 0.0f;
   } else {
     const float inv_max_acceleration = 1.0f / max_acceleration;
@@ -43,40 +41,44 @@ MotionProfileConstAcc::MotionProfileConstAcc(
     // Distances covered during accel/decel
     float d_accel = 0.5f * (v_start + max_velocity) * t_accel;
     float d_decel = 0.5f * (max_velocity + v_end) * t_decel;
-
     float d_cruise = distance - (d_accel + d_decel);
+    float v_peak = 0.0;
 
     if (d_cruise >= 0.0f) {
       // Trapezoidal velocity profile
       MotionProfileConstAcc::t1 = t_accel;
       MotionProfileConstAcc::t2 = t1 + d_cruise / max_velocity;
       MotionProfileConstAcc::t3 = t2 + t_decel;
-      MotionProfileConstAcc::v_peak = max_velocity;
+      v_peak = max_velocity;
     } else {
       // Triangular velocity profile: recompute peak velocity v_peak
       float v_peak_sq = max_acceleration * distance + 0.5f * (v_start * v_start + v_end * v_end);
-      float v_peak = std::sqrt(std::max(0.0f, v_peak_sq));
+      v_peak = std::sqrt(std::max(0.0f, v_peak_sq));
 
       MotionProfileConstAcc::t1 = (v_peak - v_start) * inv_max_acceleration;
       MotionProfileConstAcc::t2 = t1 + 0.0f;
       MotionProfileConstAcc::t3 = t2 + (v_peak - v_end) * inv_max_acceleration;
-      MotionProfileConstAcc::v_peak = v_peak;
     }
+
+    // normalize velocity and acceleration to interpolator range (0..1)
+    const float inv_distance = 1.0f/distance;
+    max_acceleration *= inv_distance;
+    v_start *= inv_distance;
+    v_end *= inv_distance;
+    v_peak *= inv_distance;
+
+    // assign values
+    MotionProfileConstAcc::d1 = 0.5f * (v_start + v_peak) * t1;
+    MotionProfileConstAcc::d2 = d1 + v_peak * (t2-t1);
+    MotionProfileConstAcc::v_start = v_start;
+    MotionProfileConstAcc::v_end = v_end;
+    MotionProfileConstAcc::v_peak = v_peak;
+    MotionProfileConstAcc::acceleration = max_acceleration;
   }
 
-  // normalize velocity and acceleration to interpolator range (0..1)
-  const float inv_distance = 1.0f/distance;
-  v_start *= inv_distance;
-  v_end *= inv_distance;
-  v_peak *= inv_distance;
-  acceleration *= inv_distance;
-
-  // precompute some values for faster evaluation
-  MotionProfileConstAcc::d1 = 0.5f * (v_start + v_peak) * t1;
-  MotionProfileConstAcc::d2 = d1 + v_peak * (t2-t1);
-
-  //LOG_INFO("d1=%f, d2=%f, d3=%f", d1, d2, distance);
-  //LOG_INFO("t1=%f, t2=%f, t3=%f", t1, t2, t3);
+  // LOG_INFO("d1=%f, d2=%f, d3=%f", MotionProfileConstAcc::d1, MotionProfileConstAcc::d2, distance);
+  // LOG_INFO("t1=%f, t2=%f, t3=%f", MotionProfileConstAcc::t1, MotionProfileConstAcc::t2, MotionProfileConstAcc::t3);
+  // LOG_INFO("vs=%f, vp=%f, ve=%f", MotionProfileConstAcc::v_start, MotionProfileConstAcc::v_peak, MotionProfileConstAcc::v_end);
 }
 
 float MotionProfileConstAcc::evaluate(float time) const {
@@ -119,8 +121,19 @@ CartesianPathSegment::CartesianPathSegment(const Pose6DF& start_pose,
   CartesianPathSegment::end_velocity = LinearAngular(0.0f, 0.0f);
   CartesianPathSegment::max_acceleration = max_acceleration;
 
-  travel_distance.linear = (end_pose.translation - start_pose.translation).length();
+  Vec3F translation_delta = end_pose.translation - start_pose.translation;
+  travel_distance.linear = (translation_delta).length();
   travel_distance.angular = (start_pose.rotation.normalized_inverse() * end_pose.rotation).angle();
+
+  translation_delta_normalized = translation_delta.normalized();
+
+
+  /*
+  QuaternionF rotation_delta = (end_pose.rotation * start_pose.rotation.normalized_inverse());
+  Vec3F axis;
+  float angle;
+  rotation_delta.to_axis_angle(axis, angle);
+  rotation_delta_axis = axis; */
 }
 
 CartesianPathSegment::CartesianPathSegment(const Pose6DF& pose, float dwell_time)
@@ -144,9 +157,9 @@ void CartesianPathSegment::compute_motion_profile() {
   if(dwell_time > 0.0f) {
     motion_profile = MotionProfileConstAcc(dwell_time);
   } else {
-    MotionProfileConstAcc linear_profile(travel_distance.linear,start_velocity.linear, 
-                                        end_velocity.linear, target_velocity.linear, 
-                                        max_acceleration.linear);
+    MotionProfileConstAcc linear_profile(travel_distance.linear, start_velocity.linear, 
+                                         end_velocity.linear, target_velocity.linear, 
+                                         max_acceleration.linear);
 
     MotionProfileConstAcc angular_profile(travel_distance.angular, start_velocity.angular, 
                                           end_velocity.angular, target_velocity.angular, 
@@ -164,6 +177,7 @@ void CartesianPathSegment::compute_motion_profile() {
 void CartesianPathSegment::evaluate(float time, Pose6DF& pose) const {
   // evaluate motion profile
   float t = motion_profile.evaluate(time);
+  // LOG_INFO(">t_x [mm]: %f", t);
 
   // interpolate pose
   pose = Pose6DF::lerp(start_pose, end_pose, t);
@@ -265,6 +279,7 @@ bool JointSpacePathSegmentGenerator::generate_next(JointSpacePathSegment& js_pat
   // evaluate path to get new end position
   Pose6DF seg_end_pose;
   path_segment->evaluate(current_time, seg_end_pose);
+  // LOG_INFO(">pos_x [mm]: %f", seg_end_pose.translation.x);
 
   // evaluate inverse kinematic model here
   float next_joint_pos[NUM_JOINTS];
@@ -279,4 +294,8 @@ bool JointSpacePathSegmentGenerator::generate_next(JointSpacePathSegment& js_pat
     current_joint_pos[i] = next_joint_pos[i];
 
   return end_reached;
+}
+
+const CartesianPathSegment* JointSpacePathSegmentGenerator::get_path_segment() const {
+  return path_segment;
 }

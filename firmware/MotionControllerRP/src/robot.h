@@ -21,7 +21,7 @@ class Robot;
 
 enum class ERobotState {
   IDLE = 0,
-  BUFFERING_PAH = 1,
+  BUFFERING_PATH = 1,
   EXECUTING_PATH = 2,
   ERROR = 3
 };
@@ -84,6 +84,8 @@ class Robot : public ICommandProcessor {
     void process_motion_command(const GCodeCommand& cmd, std::string& reply);
     void process_dwell_command(const GCodeCommand& cmd, std::string& reply);
     void process_machine_command(const GCodeCommand& cmd, std::string& reply);
+    void process_set_pose_command(const GCodeCommand& cmd, std::string& reply);
+    void process_set_servo_parameter_command(const GCodeCommand& cmd, std::string& reply);
 
   protected:
     static bool update_motion_controller_isr(repeating_timer_t* timer); // called from update timer
@@ -102,6 +104,7 @@ class Robot : public ICommandProcessor {
 
     LinearAngular max_acceleration;
     Pose6DF current_pose;
+    LinearAngular current_feedrate;
 
     SharedData shared_data;
 

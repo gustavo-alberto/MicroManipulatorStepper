@@ -46,7 +46,7 @@ float MT6835Encoder::read_abs_angle() {
     return raw_angle * RAW_TO_ANGLE;
 }
 
-int32_t MT6835Encoder::read_abs_angle_raw() {
+MT6835Encoder::AbsRawAngleType MT6835Encoder::read_abs_angle_raw() {
     uint8_t data[6] = {0};
     data[0] = MT6835_OP_ANGLE << 4;
     data[1] = MT6835_REG_ANGLE1;
@@ -68,6 +68,10 @@ int32_t MT6835Encoder::read_abs_angle_raw() {
     }
 
     return update_abs_raw_angle(raw_angle);
+}
+
+MT6835Encoder::AbsRawAngleType MT6835Encoder::get_last_abs_raw_angle() {
+  return abs_raw_angle;
 }
 
 int32_t MT6835Encoder::get_rawcounts_per_rev() {
