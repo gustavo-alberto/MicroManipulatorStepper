@@ -1,3 +1,8 @@
+// --------------------------------------------------------------------------------------
+// This code is a modified version of the MT6835 Driver from the SimpleFOC project
+// being distributed under the MIT liscence as well. Thank you SimpleFOC !
+// --------------------------------------------------------------------------------------
+
 #pragma once
 
 #include <stdint.h>

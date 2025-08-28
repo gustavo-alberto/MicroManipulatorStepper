@@ -1,3 +1,10 @@
+// --------------------------------------------------------------------------------------
+// Project: MicroManipulatorStepper
+// License: MIT (see LICENSE file for full description)
+//          All text in here must be included in any redistribution.
+// Author:  M. S. (diffraction limited)
+// --------------------------------------------------------------------------------------
+
 #include "encoder_lut.h"
 #include "pico/stdlib.h"
 #include "utilities/logging.h"

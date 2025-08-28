@@ -1,3 +1,10 @@
+// --------------------------------------------------------------------------------------
+// Project: MicroManipulatorStepper
+// License: MIT (see LICENSE file for full description)
+//          All text in here must be included in any redistribution.
+// Author:  M. S. (diffraction limited)
+// --------------------------------------------------------------------------------------
+
 #include "TB6612_motor_driver.h"
 
 #include <math.h>
