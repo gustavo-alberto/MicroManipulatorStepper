@@ -12,8 +12,8 @@ The device can be controlled via simple G-Code commands over an USB serial inter
 The firmware implements a complete motion planning stack with look-ahead for smooth and accurate path following capabilities. 
 
 <div style="display: flex; gap: 1%;">
-  <img src="images/MicroManipulator.jpg" alt="Image 1" style="flex: 1; object-fit: contain; height: 16vw;">
-  <img src="images/ControllerPCB.jpg" alt="Image 2" style="flex: 1; object-fit: contain; height: 16vw;">
+  <img src="images/MicroManipulator.jpg" alt="Image 1" style="flex: 1; object-fit: contain; height: 10vw;">
+  <img src="images/ControllerPCB.jpg" alt="Image 2" style="flex: 1; object-fit: contain; height: 10vw;">
 </div>
 
 ### ⚙ CAD-Files
