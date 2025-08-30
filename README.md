@@ -1,4 +1,4 @@
-<img width="3840" height="2160" alt="image" src="https://github.com/user-attachments/assets/a4db5809-44b0-48ae-b589-fc47345dc1eb" /># Micro Manipulator Stepper (Page under construction)
+# Micro Manipulator Stepper (Page under construction)
 
 This project contains an open source low-cost, easy-to-build motorized **XYZ Micro-Manipulator** motion controll platform achieving sub micrometer precision.
 It's designed for applications such as optical alignment, probing electronic components, and microscopy.
