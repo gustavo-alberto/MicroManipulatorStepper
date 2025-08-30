@@ -1,5 +1,4 @@
 # Micro Manipulator Stepper (Page under construction)
-A sub-micrometer 3D motion control plattform.
 
 This project contains an open source low-cost, easy-to-build motorized **XYZ Micro-Manipulator** motion controll platform achieving sub micrometer precision.
 It's designed for applications such as optical alignment, probing electronic components, and microscopy.
@@ -19,6 +18,8 @@ The firmware implements a complete motion planning stack with look-ahead for smo
 ### ⚙ CAD-Files
 
 All CAD models are made in FreeCAD, to allow everyone to view and modify the design without subscribing or paying for a propriatary CAD solution.
+Note that most components are already disgned with the goal to make them easily machinable on a 3-Axis CNC-Mill.
+You can also 3D-Print the parts but have to live with thermal drift (carbon filled filaments cam reduce this problem).
 
 <div style="display: flex;">
     <img src="images/FreeCAD-Model.jpg" alt="FreeCAD Model" width="50%">
@@ -26,9 +27,16 @@ All CAD models are made in FreeCAD, to allow everyone to view and modify the des
 
 <br>
 
-The files for the metric version can be found here: [CAD Models](construction).
+The files can be found here: [CAD Models](construction).
 Please note that FreeCAD version **1.1.0dev** was used and the files might not work with older versions.
 
 ### ⚙ Electronics
+
+The electronics is designed in **KiCAD** and only commonly available modules (Motordrivers, MCU board) are used and connected by a simple PCB. No SMD soldering is required to populate the board to make the build extra accassible.
+
+<div style="display: flex; gap: 1%;">
+  <img src="images/Kicad-Board.jpg" alt="Image 1" style="flex: 1; object-fit: contain; height: 10vw;">
+  <img src="images/ControllerPCB.jpg" alt="Image 2" style="flex: 1; object-fit: contain; height: 10vw;">
+</div>
 
 ### ⚙ Firmware
