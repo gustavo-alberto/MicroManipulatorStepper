@@ -1,4 +1,4 @@
-# Micro Manipulator Stepper (Page under construction)
+<img width="3840" height="2160" alt="image" src="https://github.com/user-attachments/assets/a4db5809-44b0-48ae-b589-fc47345dc1eb" /># Micro Manipulator Stepper (Page under construction)
 
 This project contains an open source low-cost, easy-to-build motorized **XYZ Micro-Manipulator** motion controll platform achieving sub micrometer precision.
 It's designed for applications such as optical alignment, probing electronic components, and microscopy.
@@ -10,7 +10,7 @@ A 'magnetic gearing' approach increases the resolution of the low-cost megnetic 
 The device can be controlled via simple G-Code commands over an USB serial interface and is thus easily integrated into other projects.
 The firmware implements a complete motion planning stack with look-ahead for smooth and accurate path following capabilities. 
 
-<div style="display: flex; gap: 1%;">
+<div style="display: flex; gap: 5%;">
   <img src="images/MicroManipulator.jpg" alt="Image 1" style="flex: 1; object-fit: contain; height: 10vw;">
   <img src="images/ControllerPCB.jpg" alt="Image 2" style="flex: 1; object-fit: contain; height: 10vw;">
 </div>
@@ -34,9 +34,17 @@ Please note that FreeCAD version **1.1.0dev** was used and the files might not w
 
 The electronics is designed in **KiCAD** and only commonly available modules (Motordrivers, MCU board) are used and connected by a simple PCB. No SMD soldering is required to populate the board to make the build extra accassible.
 
-<div style="display: flex; gap: 1%;">
+<div style="display: flex; gap: 5%;">
   <img src="images/Kicad-Board.jpg" alt="Image 1" style="flex: 1; object-fit: contain; height: 10vw;">
   <img src="images/ControllerPCB.jpg" alt="Image 2" style="flex: 1; object-fit: contain; height: 10vw;">
 </div>
 
 ### ⚙ Firmware
+
+The firmware is written in C++ and takes some inspiration from the 'SimpleFOC' project. It aims to be streamlined and readable without any extra fuss, focussing at the hardware ised in this project.
+It implements path planning with look-ahead and unlike many other motion controller projects supports true 6DOF-Pose interpolation and planning making it ready for driving hexapod motion plattforms, that may or may not be the next step for this project.
+
+<div style="display: flex; gap: 5%;">
+  <img src="documentation/firmware/firmware_overview.png" alt="Image 1" style="flex: 1; object-fit: contain; height: 10vw;">
+  <img src="documentation/firmware/path_planning.png" alt="Image 2" style="flex: 1; object-fit: contain; height: 10vw;">
+</div>
