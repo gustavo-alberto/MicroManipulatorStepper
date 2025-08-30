@@ -45,6 +45,6 @@ The firmware is written in C++ and takes some inspiration from the 'SimpleFOC' p
 It implements path planning with look-ahead and unlike many other motion controller projects supports true 6DOF-Pose interpolation and planning making it ready for driving hexapod motion plattforms, that may or may not be the next step for this project.
 
 <div style="display: flex; gap: 5%;">
-  <img src="documentation/firmware/firmware_overview.png" alt="Image 1" style="flex: 1; object-fit: contain; height: 10vw;">
-  <img src="documentation/firmware/path_planning.png" alt="Image 2" style="flex: 1; object-fit: contain; height: 10vw;">
+  <img src="documentation/firmware/firmware_overview.png" alt="Image 1" width="50%">
+  <img src="documentation/firmware/path_planning.png" alt="Image 2" width="50%">
 </div>
