@@ -26,7 +26,7 @@ You can also 3D-Print the parts but have to live with thermal drift (carbon fill
 <br>
 
 The files can be found here: [CAD Models](construction).
-Please note that FreeCAD version **1.1.0dev** was used and the files might not work with older versions.
+Please note that **FreeCAD** version **1.1.0dev** was used and the files might not work with older versions.
 
 ### ⚙ Kinematic Model
 
