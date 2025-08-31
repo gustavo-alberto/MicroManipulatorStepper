@@ -3,6 +3,8 @@
 This project contains an open source low-cost, easy-to-build motorized **XYZ Micro-Manipulator** motion controll platform achieving sub micrometer precision.
 It's designed for applications such as optical alignment, probing electronic components, and microscopy.
 
+![DeviceInMotion](images/overview.gif)
+
 Thanks to its parallel kinematic structure and miniature ball joints, it achieves good mechanical stiffness and a large range of motion.
 The motors are off the shelf stepper motors driven by a 30kHz closed loop controller and a very precise PWM signal.
 A 'magnetic gearing' approach increases the resolution of the low-cost megnetic rotary encoders by a factor of 30 allowing for steps down to 50nm
