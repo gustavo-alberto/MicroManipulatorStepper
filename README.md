@@ -19,6 +19,8 @@ All CAD models are made in **FreeCAD**, to allow everyone to view and modify the
 Note that most components are already disgned with the goal to make them easily machinable on a 3-Axis CNC-Mill.
 You can also 3D-Print the parts but have to live with thermal drift (carbon filled filaments cam reduce this problem).
 
+![DeviceInMotion](images/microscopy_die.gif)
+
 <div style="display: flex;">
     <img src="images/FreeCAD-Model.jpg" alt="FreeCAD Model" width="50%">
 </div>
