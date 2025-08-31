@@ -30,6 +30,11 @@ You can also 3D-Print the parts but have to live with thermal drift (carbon fill
 The files can be found here: [CAD Models](construction).
 Please note that FreeCAD version **1.1.0dev** was used and the files might not work with older versions.
 
+### ⚙ Kinematic Model
+
+The kinematic model is defined here [CAD Models](firmware/MotionControllerRP/src/kinemtaic_models/kinematic_model_delta3d.cpp).
+Please check the dimensions of you build against the values set in the constructor. In particular make sure the arm length matches.
+
 ### ⚙ Electronics
 
 The electronics is designed in **KiCAD** and only commonly available modules (Motordrivers, MCU board) are used and connected by a simple PCB. No SMD soldering is required to populate the board to make the build extra accassible.
