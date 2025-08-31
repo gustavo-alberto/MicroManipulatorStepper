@@ -5,7 +5,7 @@ It's designed for applications such as optical alignment, probing electronic com
 
 Thanks to its parallel kinematic structure and miniature ball joints, it achieves good mechanical stiffness and a large range of motion.
 The motors are off the shelf stepper motors driven by a 30kHz closed loop controller and a very precise PWM signal.
-A 'magnetic gearing' approach increases the resolution of the low-cost megnetic rotary encoders by a factor of 30 allowing for steps down to 50nm.
+A 'magnetic gearing' approach increases the resolution of the low-cost megnetic rotary encoders by a factor of 30 allowing for steps down to 50nm (Please mind the differenc ebeteween resolution and accuracy. The absoluthe accuracy is much worse).
 
 The device can be controlled via simple G-Code commands over an USB serial interface and is thus easily integrated into other projects.
 The firmware implements a complete motion planning stack with look-ahead for smooth and accurate path following capabilities. 
