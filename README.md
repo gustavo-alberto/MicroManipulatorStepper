@@ -15,7 +15,7 @@ The firmware implements a complete motion planning stack with look-ahead for smo
 
 ### ⚙ CAD-Files
 
-All CAD models are made in FreeCAD, to allow everyone to view and modify the design without subscribing or paying for a propriatary CAD solution.
+All CAD models are made in **FreeCAD**, to allow everyone to view and modify the design without subscribing or paying for a propriatary CAD solution.
 Note that most components are already disgned with the goal to make them easily machinable on a 3-Axis CNC-Mill.
 You can also 3D-Print the parts but have to live with thermal drift (carbon filled filaments cam reduce this problem).
 
@@ -26,7 +26,7 @@ You can also 3D-Print the parts but have to live with thermal drift (carbon fill
 <br>
 
 The files can be found here: [CAD Models](construction).
-Please note that **FreeCAD** version **1.1.0dev** was used and the files might not work with older versions.
+Please note that FreeCAD version **1.1.0dev** was used and the files might not work with older versions.
 
 ### ⚙ Kinematic Model
 
