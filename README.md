@@ -13,13 +13,13 @@ A 'magnetic gearing' approach increases the resolution of the low-cost megnetic 
 The device can be controlled via simple G-Code commands over an USB serial interface and is thus easily integrated into other projects.
 The firmware implements a complete motion planning stack with look-ahead for smooth and accurate path following capabilities. 
 
+![DeviceInMotion](images/microscopy_die.gif)
+
 ### ⚙ CAD-Files
 
 All CAD models are made in **FreeCAD**, to allow everyone to view and modify the design without subscribing or paying for a propriatary CAD solution.
 Note that most components are already disgned with the goal to make them easily machinable on a 3-Axis CNC-Mill.
 You can also 3D-Print the parts but have to live with thermal drift (carbon filled filaments cam reduce this problem).
-
-![DeviceInMotion](images/microscopy_die.gif)
 
 <div style="display: flex;">
     <img src="images/FreeCAD-Model.jpg" alt="FreeCAD Model" width="50%">
