@@ -54,3 +54,25 @@ It implements path planning with look-ahead and unlike many other motion control
   <img src="documentation/firmware/firmware_overview.png" alt="Image 1" width="50%">
   <img src="documentation/firmware/path_planning.png" alt="Image 2" width="50%">
 </div>
+
+### ⚙ G-Code Interface
+
+The firmware supports only a small subset of G-Code commands listed below.  
+Each command is acknowledged with either an **`ok`** or **`error`** response.  
+
+If a command provides additional information (e.g., the *get position* command), that information is returned **before** the `ok` message.  
+The client must wait for an acknowledgment from the previous command before sending the next one — otherwise, behavior is undefined.
+
+| Command        | Description                                                                 |
+|----------------|-----------------------------------------------------------------------------|
+| `G0 X Y Z F`   | Move the end-effector in a straight line to the specified position. <br> • `X`: target position on X-axis <br> • `Y`: target position on Y-axis <br> • `Z`: target position on Z-axis <br> • `F`: feed rate (movement speed) |
+| `G1 X Y Z F`   | Same as `G0`. |
+| `M204 L A`     | Set current acceleration. <br> • `L`: linear acceleration (m/s²) <br> • `A`: angular acceleration (rad/s²) |
+| `M50`          | Get current actuator pose (position).                                       |
+| `M51`          | Get motion controller and servo loop update frequency.                     |
+| `M52`          | Get the number of items in the planner queue.                               |
+| `M53`          | Check if all moves are finished. Returns `1` if finished, `0` otherwise.    |
+
+
+
+
