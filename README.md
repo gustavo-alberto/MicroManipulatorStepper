@@ -33,7 +33,7 @@ Please note that FreeCAD version **1.1.0dev** was used and the files might not w
 ### ⚙ Kinematic Model
 
 The kinematic model is defined here: [kinematic_model_delta3d.cpp](firmware/MotionControllerRP/src/kinemtaic_models/kinematic_model_delta3d.cpp).
-Please check the dimensions of you build against the values set in the constructor. In particular make sure the arm length matches.
+Please check the dimensions of your build against the values set in the constructor. In particular make sure the arm length matches.
 
 ### ⚙ Electronics
 
