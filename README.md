@@ -1,7 +1,7 @@
 # Micro Manipulator Stepper (Page under construction)
 
 This project contains an open source low-cost, easy-to-build motorized **XYZ Micro-Manipulator** motion controll platform achieving sub micrometer precision.
-It's designed for applications such as optical alignment, probing electronic components, and microscopy.
+It's designed for applications such as optical alignment, probing electronic components, and microscopy. Please watch the for information about the device and how it is build: ![An Open Source Motorized XYZ Micro-Manipulator](https://youtu.be/MgQbPdiuUTw)
 
 ![DeviceInMotion](images/overview.gif)
 
@@ -53,6 +53,11 @@ It implements path planning with look-ahead and unlike many other motion control
   <img src="documentation/firmware/firmware_overview.png" alt="Image 1" width="50%">
   <img src="documentation/firmware/path_planning.png" alt="Image 2" width="50%">
 </div>
+
+#### Building and Flashing the Firmware
+
+For building and flashing the firmware, visual studio code (available for free in windows and linux) is recommended.
+Install the PlattformIO addon and open the firmware folder. You can now build and flash the firmware like any other PlattformIO project.
 
 ### ⚙ G-Code Interface
 
