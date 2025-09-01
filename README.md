@@ -75,3 +75,5 @@ The client must wait for an acknowledgment from the previous command before send
 
 
 
+# Youtube Video
+[![Watch the video](images/thumbnail.jpg)](https://youtu.be/MgQbPdiuUTw)
