@@ -32,7 +32,7 @@ def plot_field_xz(collection, magnets, xlim, zlim, resolution=100, density=10, p
     - resolution: Grid resolution
     - density: Streamplot density
     """
-    print('computing plot, please wait...')
+    print('computing plot, please wait (can take a minute or two)...')
 
     # Create grid in XZ-plane (Y=0)
     x = np.linspace(*xlim, resolution)
@@ -60,7 +60,7 @@ def plot_field_xz(collection, magnets, xlim, zlim, resolution=100, density=10, p
             linewidth=1.0
         )
         plt.colorbar(stream.lines, label='Log( Field strength [T] )')
-    else:
+    elif plot_type == 'field_direction':
         qiver = ax.quiver(
             X, Z, BX/magnitude*0.04, BZ/magnitude*0.04,
             np.log(magnitude + 1e-12),  # Avoid log(0)
@@ -70,6 +70,8 @@ def plot_field_xz(collection, magnets, xlim, zlim, resolution=100, density=10, p
             pivot='middle'  # arrow base in the middle of the vector
         )
         plt.colorbar(qiver, label='Log( Field strength [T] )')
+    else:
+        raise ValueError('Unknown visualiztaion type')
 
 
     ax.set_facecolor((0.1, 0.1, 0.1))
@@ -163,8 +165,8 @@ def plot_field_rotation_xz_along_lines(collection, point_pairs, num_points=200, 
 def main():
     # Parameters
     num_magnets = 13
-    spacing = 4             # mm between magnet centers
-    radius = 1.9            # mm
+    spacing = 3             # mm between magnet centers
+    radius = 1.4            # mm
     height = 4              # mm
     mag_strength = 800e3    # A/m
     show_3d_viewer = False  # show 3d viewer with simulation scene
@@ -201,7 +203,8 @@ def main():
         xlim=(-plot_range[0]/2, plot_range[0]/2),
         zlim=(-plot_range[1]/2, plot_range[1]/2),
         resolution=100,
-        density=10,
+        density=12,
+        plot_type='fieldline', #  'field_direction' or 'fieldline'
         show=False
     )
 
