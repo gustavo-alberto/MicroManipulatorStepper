@@ -56,7 +56,7 @@ It implements path planning with look-ahead and unlike many other motion control
 
 #### Building and Flashing the Firmware
 
-For building and flashing the firmware, visual studio code (available for free in windows and linux) is recommended.
+For building and flashing the firmware, visual studio code (available for free on windows and linux) is recommended.
 Install the PlattformIO addon and open the firmware folder. You can now build and flash the firmware like any other PlattformIO project.
 
 ### ⚙ G-Code Interface
