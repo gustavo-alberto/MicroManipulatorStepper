@@ -1,3 +1,10 @@
+// motor pole pair count
+//  * 100 for 0.9deg stepper motors
+//  * 50  for 1.8deg stepper motors
+#define MOTOR1_POLE_PAIRS 100
+#define MOTOR2_POLE_PAIRS 100
+#define MOTOR3_POLE_PAIRS 100
+
 // #define SINGLE_AXIS_BOARD
 #ifdef SINGLE_AXIS_BOARD
   // Single Axis Board
@@ -31,7 +38,7 @@
   #define PIN_ENCODER_MOSI 3
 
 #else
-  // 3Axis Board
+  // Pins for 3Axis Board
   #define PIN_BUILTIN_LED 23
   #define PIN_USER_BUTTON 24
 

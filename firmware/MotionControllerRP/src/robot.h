@@ -102,6 +102,7 @@ class Robot : public ICommandProcessor {
     uint32_t path_buffering_time_us;
     uint64_t path_buffering_start_time;
 
+    int motor_pole_pairs;
     RobotJoint* volatile joints[NUM_JOINTS];
 
     IKinemtaicModel* kinematic_model;

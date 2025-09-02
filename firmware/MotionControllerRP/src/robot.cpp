@@ -123,7 +123,7 @@ void Robot::init() {
       PIN_MOTOR_EN, PIN_M1_PWM_A_POS, PIN_M1_PWM_A_NEG, PIN_MOTOR_PWMAB,
       PIN_MOTOR_EN, PIN_M1_PWM_B_POS, PIN_M1_PWM_B_NEG, PIN_MOTOR_PWMAB
     );
-    joints[0] = new RobotJoint(encoder, motor_driver, 400/4);
+    joints[0] = new RobotJoint(encoder, motor_driver, MOTOR1_POLE_PAIRS);
   }
 
   // axis 2
@@ -133,7 +133,7 @@ void Robot::init() {
       PIN_MOTOR_EN, PIN_M2_PWM_A_POS, PIN_M2_PWM_A_NEG, PIN_MOTOR_PWMAB,
       PIN_MOTOR_EN, PIN_M2_PWM_B_POS, PIN_M2_PWM_B_NEG, PIN_MOTOR_PWMAB
     );
-    joints[1] = new RobotJoint(encoder, motor_driver, 400/4);
+    joints[1] = new RobotJoint(encoder, motor_driver, MOTOR2_POLE_PAIRS);
   }
 
   // axis 3
@@ -143,7 +143,7 @@ void Robot::init() {
       PIN_MOTOR_EN, PIN_M3_PWM_A_POS, PIN_M3_PWM_A_NEG, PIN_MOTOR_PWMAB,
       PIN_MOTOR_EN, PIN_M3_PWM_B_POS, PIN_M3_PWM_B_NEG, PIN_MOTOR_PWMAB
     );
-    joints[2] = new RobotJoint(encoder, motor_driver, 400/4);
+    joints[2] = new RobotJoint(encoder, motor_driver, MOTOR3_POLE_PAIRS);
   }
 
   // initialize axes

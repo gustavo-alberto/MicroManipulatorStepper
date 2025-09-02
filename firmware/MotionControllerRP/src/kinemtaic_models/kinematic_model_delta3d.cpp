@@ -37,7 +37,7 @@ KinematicModel_Delta3D::KinematicModel_Delta3D() {
   ee_attachment_points[2] = Vec3F(-15.0f, 1.5f, 0.5f);
   */
 
-  // set transfomration based on CAD model
+  // set transformation based on CAD model
   actuator_to_base[0].rotation = QuaternionF::from_axis_angle(Vec3F(0.0f, 0.0f, 1.0f), 90.0f*D2R);
   actuator_to_base[0].translation = Vec3F(-42.0f, 0.5f, 32.0f)+base_offset;
 
