@@ -21,16 +21,16 @@
   Qty.   Name                            Comments
 
 * 1		DC-DC Step Down Module		 	4.75-23V Step-Down Buck Converter Module
-* 1		(1N5819) OR (PMEG4010)			Diode
+* 1		(1N5819) OR (PMEG4010)			Diode (either through hole or SMD can be used)
 * 1		RaspberryPi Pico 2
 
 * 4		MT6835 Magnetic Encoder Module
 
 * 3		TB6612FNG Driver			
-* 3		10 μF Electrolytic Capacitor	(Unconfirmed derived from MT6835 data sheet)
-* 3		0.1 μF Ceramic Capacitor 0603	(Unconfirmed derived from MT6835 data sheet)
+* 3		470 μF Electrolytic Capacitor	(anything > 100µF will work well)
+* 3		10.0 μF Ceramic Capacitor 0603	(optional)
 
-* 2 	4.7k Resistor 0603
+* 2 	4.7k Resistor 0603				(optional)
 
 * 1		2 Pin Power Header
 * 4 	4 Pin Header
