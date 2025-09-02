@@ -40,8 +40,7 @@ Please check the dimensions of your build against the values set in the construc
 ### ⚙ Electronics
 
 The electronics is designed in **KiCAD** and only commonly available modules (Motordrivers, MCU board) are used and connected by a simple PCB. No SMD soldering is required to populate the board to make the build extra accassible.
-
-Depending on the winding resistance of your motors the device should be powered by **5V-6V** to keep current and heating to a reasonable level.
+For usual winding resistance of your motors the device should be powered by $${\color{lightgreen} 5V-6V }$$ to keep current and heating to a reasonable level.
 
 <div style="display: flex; gap: 5%;">
   <img src="images/Kicad-Board.jpg" alt="Image 1" style="flex: 1; object-fit: contain; height: 10vw;">
