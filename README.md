@@ -1,7 +1,9 @@
 # Micro Manipulator Stepper (Page under construction)
 
 This project contains an open source low-cost, easy-to-build motorized **XYZ Micro-Manipulator** motion controll platform achieving sub micrometer precision.
-It's designed for applications such as optical alignment, probing electronic components, and microscopy. Please watch the for information about the device and how it is build: ![An Open Source Motorized XYZ Micro-Manipulator](https://youtu.be/MgQbPdiuUTw)
+It's designed for applications such as optical alignment, probing electronic components, and microscopy. 
+
+Check out the youtube video for more information about the device and how it is build: ![An Open Source Motorized XYZ Micro-Manipulator](https://youtu.be/MgQbPdiuUTw)
 
 ![DeviceInMotion](images/overview.gif)
 
