@@ -52,6 +52,8 @@ For usual winding resistance of your motors the device should be powered by $${\
 The firmware is written in C++ and takes some inspiration from the 'SimpleFOC' project. It aims to be streamlined and readable without any extra fuss, focussing at the hardware ised in this project.
 It implements path planning with look-ahead and unlike many other motion controller projects supports true 6DOF-Pose interpolation and planning making it ready for driving hexapod motion plattforms, that may or may not be the next step for this project.
 
+You may find configuration for pin numbers, motor type and other parameters in [hw_config.h](firmware/MotionControllerRP/src/hw_config.h). Please check them before uploading the firmware.
+
 <div style="display: flex; gap: 5%;">
   <img src="documentation/firmware/firmware_overview.png" alt="Image 1" width="50%">
   <img src="documentation/firmware/path_planning.png" alt="Image 2" width="50%">
