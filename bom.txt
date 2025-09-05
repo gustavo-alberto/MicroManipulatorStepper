@@ -24,7 +24,7 @@
 * 1		(1N5819) OR (PMEG4010)			Diode (either through hole or SMD can be used)
 * 1		RaspberryPi Pico 2
 
-* 4		MT6835 Magnetic Encoder Module
+* 3		MT6835 Magnetic Encoder Module
 
 * 3		TB6612FNG Driver			
 * 3		470 μF Electrolytic Capacitor	(anything > 100µF will work well)
