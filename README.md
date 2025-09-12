@@ -39,6 +39,8 @@ Please check the dimensions of your build against the values set in the construc
 
 ### ⚙ Electronics
 
+WARNING: someone pointed out a mistake in the current board (misplaced via shorts 5V rail diode to ground), DO NOT PRODUCE IT AS IS ! The error will be corrected in the folowing days.
+
 The electronics are designed in **KiCAD** and only commonly available modules (motor drivers and MCU boards) are used and connected by a simple PCB. No SMD soldering is required to populate the board to make the build extra accessible.
 For usual winding resistance of your motors, the device should be powered by $${\color{lightgreen} 5V-6V }$$ to keep current and heating to a reasonable level.
 
