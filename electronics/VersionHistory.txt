@@ -1,4 +1,5 @@
 *** v1.3 ****************************
+
  - Fixed critical problem with PCB layout, where 5V rail was shorted to GND on one of the diode pins of D1.
  
 *** v1.2 ****************************
