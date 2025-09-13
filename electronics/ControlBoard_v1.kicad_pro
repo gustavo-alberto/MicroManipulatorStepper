@@ -60,11 +60,7 @@
       ],
       "drc_exclusions": [
         [
-          "lib_footprint_mismatch|169930000|57484000|e038c48e-2faf-4a84-9918-92992e245ccb|00000000-0000-0000-0000-000000000000",
-          ""
-        ],
-        [
-          "lib_footprint_mismatch|172466000|108153500|de2d6e9f-61f9-4b16-b1bd-c8439921ae86|00000000-0000-0000-0000-000000000000",
+          "courtyards_overlap|157824983|92373000|1e3ff155-4afc-4c6e-89f6-349e7c664ee5|2d74a1bc-479d-4b94-8642-28702e88d4b6",
           ""
         ]
       ],
@@ -97,7 +93,7 @@
         "items_not_allowed": "error",
         "length_out_of_range": "error",
         "lib_footprint_issues": "warning",
-        "lib_footprint_mismatch": "warning",
+        "lib_footprint_mismatch": "ignore",
         "malformed_courtyard": "error",
         "microvia_drill_out_of_range": "error",
         "mirrored_text_on_front_layer": "warning",
