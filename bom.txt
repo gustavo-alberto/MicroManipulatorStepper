@@ -36,4 +36,4 @@
 * 4 	4 Pin Header
 * 1		8 Pin Header
 
-* 3		NEMA 17 Stepper Motor
+* 3		NEMA 17 Stepper Motor (Body length <= 38mm)
