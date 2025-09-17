@@ -1,6 +1,6 @@
 ## Micro Manipulator Stepper
 
-This project contains an open source low-cost, easy-to-build motorized **XYZ Micro-Manipulator** motion control platform achieving sub micrometer precision.
+This project contains an open source low-cost, easy-to-build motorized **XYZ Micro-Manipulator** motion control platform achieving submicron precision.
 It's designed for applications such as optical alignment, probing electronic components, and microscopy.
 
 Check out the YouTube video for more information about the device and how it is built:
@@ -11,7 +11,7 @@ Check out the YouTube video for more information about the device and how it is 
 Thanks to its parallel kinematic structure and miniature ball joints, it achieves good mechanical stiffness and a large range of motion.
 The motors are off the shelf stepper motors dr​iven by a 30 kHz closed loop controller and a very precise PWM signal.
 A 'magnetic gearing' approach increases the resolution of the low-cost magnetic rotary encoders by a factor of 30 allowing for steps down to 50nm
-(**Please mind the difference between resolution and accuracy**. The absolute accuracy is much lower).
+(**Please mind the difference between resolution and accuracy**. The absolute accuracy is significantly worse.
 
 The device can be controlled via simple G-Code commands over a USB serial interface and is thus easily integrated into other projects.
 The firmware implements a complete motion planning stack with look-ahead for smooth and accurate path following capabilities.
