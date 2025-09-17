@@ -5,7 +5,8 @@ It's designed for applications such as optical alignment, probing electronic com
 
 Check out the YouTube video for more information about the device and how it is built:
 
-[![DeviceInMotion](images/overview.gif)](https://youtu.be/MgQbPdiuUTw)
+# Youtube Video
+[![Watch the video](images/thumbnail.jpg)](https://youtu.be/MgQbPdiuUTw)
 
 Thanks to its parallel kinematic structure and miniature ball joints, it achieves good mechanical stiffness and a large range of motion.
 The motors are off the shelf stepper motors dr​iven by a 30 kHz closed loop controller and a very precise PWM signal.
@@ -83,9 +84,3 @@ The client must wait for an acknowledgment from the previous command before send
 | `M51`          | Get motion controller and servo loop update frequency.                     |
 | `M52`          | Get the number of items in the planner queue.                               |
 | `M53`          | Check if all moves are finished. Returns `1` if finished, `0` otherwise.    |
-
-
-
-
-# Youtube Video
-[![Watch the video](images/thumbnail.jpg)](https://youtu.be/MgQbPdiuUTw)
