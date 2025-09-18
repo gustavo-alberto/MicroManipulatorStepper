@@ -13,9 +13,9 @@
 
 * 1m     Brass Pipe						OD=2mm ID=1mm
 						                
-* 12     M2 Screw                       M2x12mm, Counsersunk
+* 12     M2 Screw                       M2x12mm, Countersunk		
 						                
-* 6      M3 Grub Screw                  M3x4
+* 6      M3 Grub Screw                  M3x4						
 
 --- Electronics -------------------------------------------------------------------
   Qty.   Name                            Comments
@@ -37,3 +37,18 @@
 * 1		8 Pin Header
 
 * 3		NEMA 17 Stepper Motor (Body length <= 38mm)
+
+--- 3D Printing  ------------------------------------------------------------------
+  Qty.   Name                            Comments
+
+* 3		WireFlexureMount		 	0.4mm+ nozzle will probably require post-processing.
+
+* 3		RubberBandCollet			0.4mm+ nozzle will probably require post-processing.
+
+* 3		BallJointMount				0.4mm+ nozzle will probably require post-processing.
+
+* 3		Motor Mount					
+
+* 1		EndEffector					
+
+* 1 	Base Block
