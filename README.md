@@ -148,11 +148,11 @@ The client must wait for an acknowledgment from the previous command before send
 | `G0 X Y Z F`   | Move the end-effector in a straight line to the specified position. <br>• `X`, `Y`, `Z`: target positions <br>• `F`: feed rate |
 | `G1 X Y Z F`   | Same as `G0`.                                                              |
 | `G4 S/P`       | Dwell/pause for a specified time. <br>• `S`: seconds <br>• `P`: milliseconds |
-| `G24 X Y Z A B C` | Directly set current pose for servo loops. Optional rotation with `A`, `B`, `C`. |
+| `G24 X Y Z A B C` | Directly set current pose for servo loops. Optional rotation with rotation vector `A`, `B`, `C`. |
 | `G28 A-F`      | Home one or more joints. <br>• Optional joint selection `A`–`F`.           |
 | `M17`          | Enable motors and read current pose as the start pose.                     |
 | `M18`          | Disable motors.                                                            |
-| `M50`          | Get current internal position (X, Y, Z).                                   |
+| `M50`          | Get current internal pose. (Encoders are not read here)                                   |
 | `M51`          | Get current encoder angles (in degrees) and raw encoder values.              |
 | `M52`          | Get the number of items in the planner queue.                               |
 | `M53`          | Check if all planned moves are finished (`1` = finished, `0` = not finished). |
@@ -162,6 +162,7 @@ The client must wait for an acknowledgment from the previous command before send
 | `M58`          | Get firmware version.                                                      |
 | `M204 L A`     | Set linear and angular acceleration. <br>• `L`: linear acceleration <br>• `A`: angular acceleration |
 
+Note: The communication protocol uses 3D vectors for rotations. The direction represents the rotation axis and the length of the vector represents the angle of rotation around the axis.
 
 ## Youtube Video
 [![Watch the video](images/thumbnail.jpg)](https://youtu.be/MgQbPdiuUTw)
