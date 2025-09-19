@@ -19,26 +19,6 @@ A 'magnetic gearing' approach increases the resolution of the low-cost magnetic 
 The device can be controlled via simple G-Code commands over a USB serial interface and is thus easily integrated into other projects.
 The firmware implements a complete motion planning stack with look-ahead for smooth and accurate path following capabilities.
 
-## ✨ NEW: Firmware v1.0.1
-
-This update improves calibration, homing, logging, and adds several new G-Code commands.
-
-### Improvements
-- **Homing**: parallel homing support, higher repeatability, more accurate geometric reference  
-- **Joint calibration**: refined procedure, persistent flash storage (no recalibration after reboot)  
-- **Logging**: clearer and more detailed output  
-- **Python API**: easy device control from Python  
-
-### G-Code Commands
-- `G28` — Home joints (supports homing multiple axis simultanously for faster startup)
-- `G24` — Set pose command (directly sets servo targets, bypassing motion controller)  
-- `M17/M18` — Enable/Disable motors (with pose recovery from encoders on enable)  
-- `M51` — Read encoder values  
-- `M55` — Set servo loop parameters 
-- `M56` — Joint calibration (with save-to-flash option)  
-- `M57` — Read various information about the device state  
-- `M58` — Read firmware version
-
 ## 🐍 NEW: Python-API
 
 The new Python API handles all serial communication and provides convenient command execution and debug message printing.
@@ -84,6 +64,26 @@ wait_for_stop(polling_interval_ms, disable_callbacks)
 set_max_acceleration(linear_accel, angular_accel)
 set_servo_parameter(pos_kp, pos_ki, vel_kp, vel_ki, vel_filter_tc)
 ```
+
+## ✨ NEW: Firmware v1.0.1
+
+This update improves calibration, homing, logging, and adds several new G-Code commands.
+
+### Improvements
+- **Homing**: parallel homing support, higher repeatability, more accurate geometric reference  
+- **Joint calibration**: refined procedure, persistent flash storage (no recalibration after reboot)  
+- **Logging**: clearer and more detailed output  
+- **Python API**: easy device control from Python  
+
+### G-Code Commands
+- `G28` — Home joints (supports homing multiple axis simultanously for faster startup)
+- `G24` — Set pose command (directly sets servo targets, bypassing motion controller)  
+- `M17/M18` — Enable/Disable motors (with pose recovery from encoders on enable)  
+- `M51` — Read encoder values  
+- `M55` — Set servo loop parameters 
+- `M56` — Joint calibration (with save-to-flash option)  
+- `M57` — Read various information about the device state  
+- `M58` — Read firmware version
 
 ## ⚙ CAD-Files
 
