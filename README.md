@@ -6,9 +6,9 @@ It's designed for applications such as optical alignment, probing electronic com
 Check out the YouTube video for more information about the device and how it is built:<br>
 [An Open Source Motorized XYZ Micro-Manipulator - Affordable sub µm Motion Control](https://youtu.be/MgQbPdiuUTw)
 
-<div style="display: flex; gap: 5%;">
-  <img src="images/overview.gif" alt="Image 1" width="45%">
-  <img src="images/microscopy_die.gif" alt="Image 2" width="45%">
+<div style="display: flex; gap: 2%;">
+  <img src="images/overview.gif" alt="Image 1" width="49%">
+  <img src="images/microscopy_die.gif" alt="Image 2" width="49%">
 </div>
 
 Thanks to its parallel kinematic structure and miniature ball joints, it achieves good mechanical stiffness and a large range of motion.
@@ -60,9 +60,9 @@ It implements path planning with look-ahead and, unlike many other motion contro
 
 You may find configuration for pin numbers, motor type, and other parameters in [hw_config.h](firmware/MotionControllerRP/src/hw_config.h). Please check them before uploading the firmware.
 
-<div style="display: flex; gap: 5%;">
-  <img src="documentation/firmware/firmware_overview.png" alt="Image 1" width="45%">
-  <img src="documentation/firmware/path_planning.png" alt="Image 2" width="45%">
+<div style="display: flex; gap: 2%;">
+  <img src="documentation/firmware/firmware_overview.png" alt="Image 1" width="49%">
+  <img src="documentation/firmware/path_planning.png" alt="Image 2" width="49%">
 </div>
 
 #### Building and Flashing the Firmware
