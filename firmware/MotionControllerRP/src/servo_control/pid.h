@@ -8,6 +8,7 @@ class LowpassFilter {
 
     void  set_time_constant(float time_constant);
     float update(float value, float dt);
+    void  reset(float value);
 
   private:
     float value_prev;

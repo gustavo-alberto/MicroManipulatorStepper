@@ -147,10 +147,11 @@ class MT6835Encoder {
 
       void init(uint8_t bandwidth=0x5, uint8_t hysteresis=0x4);
       void reset_abs_angle(int32_t abs_raw_angle=0);  // resets the total revolutions of abs angle
-
+      void reset_abs_angle_period();                  // Brings abs angle into [0..2pi)
       float read_abs_angle();                         // returns the absolute angle in radians
+      float get_last_abs_angle() const;               // returns the last read abs angle
       AbsRawAngleType read_abs_angle_raw();           // returns the absolute angle in raw counts
-      AbsRawAngleType get_last_abs_raw_angle();       // returns the last read abs raw angle
+      AbsRawAngleType get_last_abs_raw_angle() const; // returns the last read abs raw angle
 
       int32_t get_rawcounts_per_rev();                // returns the number of raw counts per revolution
 

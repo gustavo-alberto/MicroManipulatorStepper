@@ -3,81 +3,90 @@
 // being distributed under the MIT liscence as well. Thank you SimpleFOC !
 // --------------------------------------------------------------------------------------
 
-
 #include "MT6835_encoder.h"
 #include "hardware/spi.h"
 #include "hardware/gpio.h"
 #include "pico/stdlib.h"
 
 void MT6835Encoder::setup_spi(spi_inst_t* spi, uint pin_sck, uint pin_mosi, uint pin_miso, int32_t baudrate_hz) {
-    // Set GPIO functions to SPI
-    gpio_set_function(pin_sck, GPIO_FUNC_SPI);
-    gpio_set_function(pin_mosi, GPIO_FUNC_SPI);
-    gpio_set_function(pin_miso, GPIO_FUNC_SPI);
-    
-    // SPI format: 8 bits, mode 3 (CPOL=1, CPHA=1)
-    spi_init(spi, baudrate_hz);
-    spi_set_format(spi, 8, SPI_CPOL_1, SPI_CPHA_1, SPI_MSB_FIRST);
+  // Set GPIO functions to SPI
+  gpio_set_function(pin_sck, GPIO_FUNC_SPI);
+  gpio_set_function(pin_mosi, GPIO_FUNC_SPI);
+  gpio_set_function(pin_miso, GPIO_FUNC_SPI);
+  
+  // SPI format: 8 bits, mode 3 (CPOL=1, CPHA=1)
+  spi_init(spi, baudrate_hz);
+  spi_set_format(spi, 8, SPI_CPOL_1, SPI_CPHA_1, SPI_MSB_FIRST);
 }
 
-
 MT6835Encoder::MT6835Encoder(spi_inst_t* spi, uint cs_pin) : spi(spi), cs_pin(cs_pin) {
-    // nop
+  // nop
 }
 
 MT6835Encoder::~MT6835Encoder() {
-    // nop
+  // nop
 }
 
 void MT6835Encoder::init(uint8_t bandwidth, uint8_t hysteresis) {
-    if (cs_pin >= 0) {
-        gpio_init(cs_pin);
-        gpio_set_dir(cs_pin, GPIO_OUT);
-        gpio_put(cs_pin, 1);  // CS high
-    }
+  if (cs_pin >= 0) {
+      gpio_init(cs_pin);
+      gpio_set_dir(cs_pin, GPIO_OUT);
+      gpio_put(cs_pin, 1);  // CS high
+  }
 
-    set_bandwidth(bandwidth);
-    set_hysteresis(hysteresis);
+  set_rotation_direction(0);    // needs to be set, otherwise might be random
+  set_bandwidth(bandwidth);
+  set_hysteresis(hysteresis);
 
-    last_raw_angle = 0;
-    abs_raw_angle = 0;
+  last_raw_angle = 0;
+  abs_raw_angle = 0;
 }
 
 void MT6835Encoder::reset_abs_angle(int32_t abs_raw_angle) {
   MT6835Encoder::abs_raw_angle = abs_raw_angle;
 }
 
+void MT6835Encoder::reset_abs_angle_period() {
+  abs_raw_angle %= MT6835_CPR;
+  if (abs_raw_angle < 0)
+    abs_raw_angle += MT6835_CPR;
+}
+
 float MT6835Encoder::read_abs_angle() {
-    int32_t raw_angle = read_abs_angle_raw();
-    return raw_angle * RAW_TO_ANGLE;
+  int32_t raw_angle = read_abs_angle_raw();
+  return raw_angle * RAW_TO_ANGLE;
 }
 
 MT6835Encoder::AbsRawAngleType MT6835Encoder::read_abs_angle_raw() {
-    uint8_t data[6] = {0};
-    data[0] = MT6835_OP_ANGLE << 4;
-    data[1] = MT6835_REG_ANGLE1;
-    // rest zero
+  uint8_t data[6] = {0};
+  data[0] = MT6835_OP_ANGLE << 4;
+  data[1] = MT6835_REG_ANGLE1;
+  // rest zero
 
-    spi_begin_transaction();
-    spi_transfer(data, 6);
-    spi_end_transaction();
+  spi_begin_transaction();
+  spi_transfer(data, 6);
+  spi_end_transaction();
 
-    last_status = data[4] & 0x07;
-    last_crc = data[5];
-    int32_t raw_angle = ((int32_t)data[2] << 13) | ((int32_t)data[3] << 5) | (data[4] >> 3);
-    
-    if (check_crc) {
-        if (last_crc != calc_crc(raw_angle, last_status)) {
-            last_status |= MT6835_CRC_ERROR;
-            return -1.0f; // CRC error indicator
-        }
-    }
+  last_status = data[4] & 0x07;
+  last_crc = data[5];
+  int32_t raw_angle = ((int32_t)data[2] << 13) | ((int32_t)data[3] << 5) | (data[4] >> 3);
+  
+  if (check_crc) {
+      if (last_crc != calc_crc(raw_angle, last_status)) {
+          last_status |= MT6835_CRC_ERROR;
+          return -1.0f; // CRC error indicator
+      }
+  }
 
-    return update_abs_raw_angle(raw_angle);
+  return update_abs_raw_angle(raw_angle);
 }
 
-MT6835Encoder::AbsRawAngleType MT6835Encoder::get_last_abs_raw_angle() {
+MT6835Encoder::AbsRawAngleType MT6835Encoder::get_last_abs_raw_angle() const {
   return abs_raw_angle;
+}
+
+float MT6835Encoder::get_last_abs_angle() const {
+  return abs_raw_angle * RAW_TO_ANGLE;
 }
 
 int32_t MT6835Encoder::get_rawcounts_per_rev() {

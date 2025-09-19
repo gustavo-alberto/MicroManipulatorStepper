@@ -109,10 +109,6 @@ bool KinematicModel_Delta3D::inverse(const Pose6DF& pose, float* joint_positions
     joint_positions[i] = rotor_angle_offset[i] + angle;
   }
 
- // joint_positions[0] = pose.translation.x;
- // joint_positions[1] = pose.translation.y;
- // joint_positions[2] = pose.translation.z;
-
   return true;
 }
 

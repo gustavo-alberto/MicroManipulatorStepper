@@ -20,37 +20,37 @@ void PIDController::set_parameter(float kP, float kI, float kD, float output_lim
 
 // PID controller function
 float PIDController::compute(float error, float dt, float one_over_dt) {
-    // Proportional component
-    float proportional = kP * error;
-    float output = proportional;
+  // Proportional component
+  float proportional = kP * error;
+  float output = proportional;
 
-    // Integral component
-    if(kI != 0.0f) {
-      // Tustin transform of the integral part
-      // u_ik = u_ik_1  + I*Ts/2*(ek + ek_1)
-      float integral = integral_prev + kI_half*dt*(error + error_prev);
-      integral = std::clamp(integral, -windup_limit, windup_limit);
-      output += integral;
-      integral_prev = integral;
-    }
+  // Integral component
+  if(kI != 0.0f) {
+    // Tustin transform of the integral part
+    // u_ik = u_ik_1  + I*Ts/2*(ek + ek_1)
+    float integral = integral_prev + kI_half*dt*(error + error_prev);
+    integral = std::clamp(integral, -windup_limit, windup_limit);
+    output += integral;
+    integral_prev = integral;
+  }
 
-    // Derivative component
-    if(kD != 0.0f) {
-      // u_dk = D(ek - ek_1)/Ts
-      float derivative = kD*(error - error_prev)*one_over_dt;
-      output += derivative;
-    }
+  // Derivative component
+  if(kD != 0.0f) {
+    // u_dk = D(ek - ek_1)/Ts
+    float derivative = kD*(error - error_prev)*one_over_dt;
+    output += derivative;
+  }
 
-    // clamp output and store error
-    output = std::clamp(output, -output_limit, output_limit);
-    error_prev = error;
-    
-    return output;
+  // clamp output and store error
+  output = std::clamp(output, -output_limit, output_limit);
+  error_prev = error;
+  
+  return output;
 }
 
 void PIDController::reset(){
-    integral_prev = 0.0f;
-    error_prev = 0.0f;
+  integral_prev = 0.0f;
+  error_prev = 0.0f;
 }
 
 //--- LowpassFilter -----------------------------------------------------------
@@ -67,4 +67,8 @@ float LowpassFilter::update(float value, float dt) {
   float v = value_prev*alpha + (1.0f - alpha)*value;
   value_prev = v;
   return v;
+}
+
+void LowpassFilter::reset(float value) {
+  value_prev = value;
 }

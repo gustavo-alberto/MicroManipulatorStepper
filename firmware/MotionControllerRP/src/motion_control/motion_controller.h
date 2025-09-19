@@ -30,4 +30,5 @@ class MotionController {
 
     float current_time;
     JointSpacePathSegment current_path_segment;
+    bool current_segment_finished;
 };

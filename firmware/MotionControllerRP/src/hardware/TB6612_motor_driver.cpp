@@ -6,12 +6,14 @@
 // --------------------------------------------------------------------------------------
 
 #include "TB6612_motor_driver.h"
+#include "utilities/logging.h"
 
 #include <math.h>
 #include <algorithm>
 #include "hardware/pwm.h"
 #include "hardware/gpio.h"
 #include "hardware/clocks.h"
+#include "pico/time.h"
 
 // Helper rounding function
 int32_t round_int32(float val) {
@@ -33,7 +35,7 @@ TB6612MotorDriver::TB6612MotorDriver(
   pwm_freq(pwm_freq), pwm_resolution(pwm_resolution)
 {
   max_pwm = (1 << pwm_resolution) - 1;
-  amplitude = 0.1f * max_pwm;  // Default to 10% amplitude
+  set_amplitude(0.0f, false);
 }
 
 void init_output_pin(uint8_t pin, bool value) {
@@ -46,16 +48,10 @@ void TB6612MotorDriver::begin() {
   init_output_pin(pin_en_a, false);
   init_output_pin(pin_en_b, false);
 
-  // enable pwm pins, see TB6612 documentation for how the PWM pins work,
-  // for slow decay mode they are constantly enabled
+  // Enable pwm pins, see TB6612 documentation for how the PWM pins work,
+  // for slow decay mode they are constantly enabled.
   init_output_pin(pin_pwm_a, true);
   init_output_pin(pin_pwm_b, true);
-
-  // not needed since pwm pins are configured below
-  // pinMode(pin_pos_a, OUTPUT);
-  // pinMode(pin_neg_a, OUTPUT);
-  // pinMode(pin_pos_b, OUTPUT);
-  // pinMode(pin_neg_b, OUTPUT);
 
   // Read system clock dynamically
   uint32_t sys_clk = clock_get_hz(clk_sys);
@@ -76,6 +72,8 @@ void TB6612MotorDriver::begin() {
   setup_pwm_pin(pin_neg_a);
   setup_pwm_pin(pin_pos_b);
   setup_pwm_pin(pin_neg_b);
+
+  disable();
 }
 
 void TB6612MotorDriver::enable() {
@@ -90,18 +88,63 @@ void TB6612MotorDriver::disable() {
 
 void TB6612MotorDriver::set_amplitude(float amplitude, bool immediate_update) {
   amplitude = std::clamp(amplitude, 0.0f, 1.0f);
-  TB6612MotorDriver::amplitude = amplitude * max_pwm;
+  TB6612MotorDriver::amplitude = amplitude;
+  TB6612MotorDriver::amplitude_raw = amplitude * max_pwm;
   if(immediate_update)
     set_field_angle(field_angle);
 }
+
+
+void TB6612MotorDriver::set_amplitude_smooth(float amplitude, int ramp_time_ms) {
+  amplitude = std::clamp(amplitude, 0.0f, 1.0f);
+  float start = TB6612MotorDriver::amplitude;
+  int step_time = 10;
+  int steps = std::max(1, ramp_time_ms / step_time);
+
+  for (int i = 1; i <= steps; ++i) {
+    float t = float(i) / steps;
+    set_amplitude(start + t * (amplitude - start), true);
+    sleep_ms(step_time);
+  }
+}
+
+float TB6612MotorDriver::get_amplitude() const {
+  return amplitude;
+}
+
+void TB6612MotorDriver::rotate_field(float delta_angle, float rad_per_s, const std::function<void()>& on_step) {
+  float start = field_angle;
+  float rad_per_µs = (delta_angle >= 0.0f) ? rad_per_s*1e-6f : -rad_per_s*1e-6f;
+
+  // Determine how long the movement should take (in microseconds)
+  uint64_t duration_us = (uint64_t)(fabs(delta_angle / rad_per_s) * 1e6f);
+  uint64_t start_time_us = time_us_64();
+  while (true) {
+      uint64_t elapsed_us = time_us_64() - start_time_us;
+      if (elapsed_us >= duration_us)
+          break;
+
+      // Update the field
+      set_field_angle(start + rad_per_µs * elapsed_us);
+      
+      if(on_step)
+        on_step();
+
+      sleep_us(500);
+  }
+
+  // Ensure final angle is reached
+  set_field_angle(start + delta_angle);
+}
+
 
 void TB6612MotorDriver::set_field_angle(float angle_rad) {
   field_angle = angle_rad;
   float sin_a = sin(angle_rad);
   float cos_a = cos(angle_rad);
 
-  set_pwm(pin_pos_a, pin_neg_a, round_int32(sin_a * amplitude));
-  set_pwm(pin_pos_b, pin_neg_b, round_int32(cos_a * amplitude));
+  set_pwm(pin_pos_a, pin_neg_a, round_int32(sin_a * amplitude_raw));
+  set_pwm(pin_pos_b, pin_neg_b, round_int32(cos_a * amplitude_raw));
 }
 
 float TB6612MotorDriver::get_field_angle() {

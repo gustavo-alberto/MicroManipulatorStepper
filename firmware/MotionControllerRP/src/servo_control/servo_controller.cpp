@@ -6,7 +6,7 @@
 // --------------------------------------------------------------------------------------
 
 #include "hardware/timer.h"
-#include "Arduino.h"
+#include "pico/stdlib.h"
 
 #include "servo_controller.h"
 #include "utilities/logging.h"
@@ -19,11 +19,20 @@ ServoController::ServoController(
   ENCODER_TYPE& encoder, 
   int32_t motor_pole_pair_count) :
     motor_driver(motor_driver),
-    encoder(encoder), 
-    motorpos_to_field_angle(motor_pole_pair_count) 
+    encoder(encoder)
 {
-  motor_pos = 0.0f;
-  pos_error = 0.0f;
+  ServoController::motor_pole_pair_count = motor_pole_pair_count;
+  ServoController::motor_update_enabled = false;
+  ServoController::encoder_update_enabled = true;
+  ServoController::motor_pos = 0.0f;
+  ServoController::pos_error = 0.0f;
+
+  // set default encoder lut
+  using namespace Constants;
+  float magnet_array_radius = 30.0f; // mm
+  float magnet_pitch = 3.0f;         // mm
+  float g = float(encoder.get_rawcounts_per_rev())*(TWO_PI_F*magnet_array_radius/magnet_pitch)*0.5f;
+  build_linear_lut(encoder_raw_to_motor_pos_lut, -g, g, -TWO_PI_F, TWO_PI_F);
 }
 
 void ServoController::init(float max_motor_amplitude) {
@@ -31,26 +40,41 @@ void ServoController::init(float max_motor_amplitude) {
 
   // setup motor driver
   motor_driver.begin();
-  motor_driver.set_amplitude(0.0f, true); 
+  motor_driver.set_amplitude(0.0f, true); // correct amplitude will be set by 'set_motor_enabled()' 
   motor_driver.enable();
   motor_driver.set_field_angle(0.0f);
-
-  // soft start
-  for(int i=0; i<100; i++) {
-    motor_driver.set_amplitude(motor_current_amplitude*float(i)/(100-1), true);
-    sleep_ms(1);
-  }
 
   velocity_lowpass.set_time_constant(0.004f);
   pos_controller.set_parameter(75.0f, 50000.0f, 0.0f, Constants::PI_F*2.0F, Constants::PI_F*0.5F);
   velocity_controller.set_parameter(0.2f, 150.0f, 0.0f, Constants::PI_F*0.45f, Constants::PI_F*0.45f);
+
+ // pos_controller.set_parameter(75.0f, 2000.0f, 0.0f, Constants::PI_F*2.0F, Constants::PI_F*0.5F);
+ // velocity_controller.set_parameter(0.2f, 0.0f, 0.0f, Constants::PI_F*0.45f, Constants::PI_F*0.45f);
 }
 
-void ServoController::set_encoder_lut(LookupTable& enc_to_pos_lut) {
-  ServoController::enc_to_pos_lut = enc_to_pos_lut;
+void ServoController::set_enc_to_pos_lut(LookupTable& lut) {
+  ServoController::encoder_raw_to_motor_pos_lut = lut;
 }
 
-void ServoController::update(float target_motor_pos, float dt, float one_over_dt) { 
+// get the motor position to field angle lookup table
+const LookupTable& ServoController::get_enc_to_pos_lut() const {
+  return encoder_raw_to_motor_pos_lut;
+}
+
+void ServoController::set_pos_to_field_lut(LookupTable& lut) {
+  ServoController::motor_pos_to_field_angle_lut = lut;
+}
+
+// get the motor position to field angle lookup table
+const LookupTable& ServoController::get_pos_to_field_lut() const {
+  return motor_pos_to_field_angle_lut;
+}
+
+
+void ServoController::update(float target_motor_pos, float dt, float one_over_dt) {
+  if(encoder_update_enabled == false)
+    return;
+
   // read encoder
   int32_t encoder_angle_raw = encoder.read_abs_angle_raw();
 
@@ -72,7 +96,9 @@ void ServoController::update(float target_motor_pos, float dt, float one_over_dt
 
   // set new field direction
   // motor_driver.set_amplitude(std::clamp(abs(output*10.0f), 0.1f, 0.5f), false);
-  motor_driver.set_field_angle(field_angle + output); 
+  if(motor_update_enabled) {
+    motor_driver.set_field_angle(field_angle + output);
+  } 
 
   // store values for next update
   motor_pos_prev = motor_pos;
@@ -125,93 +151,33 @@ bool ServoController::move_to(float target_motor_pos, float at_pos_eps, float se
   return false;
 }
 
-void ServoController::move_to_open_loop(float target_motor_pos, float motor_angular_velocity) {
+void ServoController::move_to_open_loop(float delta_motor_pos, float motor_angular_velocity) {
   // Determine direction of movement at the start
-  const bool moving_forward = target_motor_pos > motor_pos;
+  const bool moving_forward = delta_motor_pos > 0.0f;
 
   uint64_t last_time = time_us_64();
-  while ((moving_forward && motor_pos < target_motor_pos) ||
-         (!moving_forward && motor_pos > target_motor_pos))
+  float pos = 0.0f;
+  while (fabs(pos) < delta_motor_pos)
   {
     uint64_t time_us = time_us_64();
     float dt = float(time_us - last_time) * 1e-6f;
     last_time = time_us;
 
     // update encoder regularly
-    encoder.read_abs_angle_raw();
+    if(encoder_update_enabled)
+      encoder.read_abs_angle_raw();
 
     // update motor position
-    motor_pos += moving_forward ? motor_angular_velocity * dt : -motor_angular_velocity * dt;
+    pos += moving_forward ? motor_angular_velocity * dt : -motor_angular_velocity * dt;
 
     // set field ange to new position
-    float clamped_motor_pos = moving_forward ? std::min(motor_pos, target_motor_pos) : 
-                                               std::max(motor_pos, target_motor_pos);
-    motor_driver.set_field_angle(motor_pos_to_field_angle(clamped_motor_pos));
+    float clamped_motor_pos = moving_forward ? std::min(pos, delta_motor_pos) : 
+                                               std::max(pos, -delta_motor_pos);
+    motor_driver.set_field_angle(clamped_motor_pos*motor_pole_pair_count);
     sleep_us(100);
   }
-  
-  motor_pos = target_motor_pos;
-}
 
-void ServoController::home(float motor_velocity, float search_range, float current) {
-  bool search_failed = false;
-  float pos_offset = 0.0f;
-  motor_driver.set_amplitude(current, true);
-  float eval_pos_delta = (Constants::TWO_PI_F*0.1)/motorpos_to_field_angle;
-
-  // determine expected encoder angle delta for motion of eval_pos_delta
-  motor_driver.set_field_angle(motor_pos_to_field_angle(motor_pos+eval_pos_delta));
-  sleep_ms(200);
-  float angle1 = encoder.read_abs_angle();
-
-  motor_driver.set_field_angle(motor_pos_to_field_angle(motor_pos));
-  sleep_ms(200);
-  float angle2 = encoder.read_abs_angle();
-  float expected_encoder_delta = (angle2-angle1);
-  
-  // start homing search
-  uint64_t last_time = time_us_64();
-  float encoder_angle_prev = encoder.read_abs_angle();
-  float last_eval_offset = 0.0f;
-
-  while(true) {
-    // compute time delta
-    uint64_t time_us = time_us_64();
-    float dt = float(time_us - last_time) * 1e-6f;
-    last_time = time_us;
-
-    // move motor and read encoder
-    pos_offset += motor_velocity * dt;
-    motor_driver.set_field_angle(motor_pos_to_field_angle(motor_pos+pos_offset));
-    float encoder_angle = encoder.read_abs_angle();
-
-    // check ratio of measured encoder delta to expected delta to determine motor stop
-    if(fabs(last_eval_offset-pos_offset) > eval_pos_delta) {
-      float encoder_delta = (encoder_angle - encoder_angle_prev);
-      float encoder_velocity_ratio = encoder_delta/expected_encoder_delta;
-      // Serial.printf(">encoder_velocity_ratio: %f\n", encoder_velocity_ratio);
-      // Serial.printf(">encoder_velocity: %f\n", encoder_velocity);
-      if(encoder_velocity_ratio < 0.05f)
-        break;
-      encoder_angle_prev = encoder_angle;
-      last_eval_offset = pos_offset;
-    }
-
-    // check if search range exeeded
-    if(fabs(pos_offset) > search_range) {
-      search_failed = true;
-      break;
-    }
-  }
-
-  // reset positions
-  motor_pos = 0;
-  motor_driver.set_field_angle(0);
-  sleep_ms(200);
-  encoder.reset_abs_angle();
- 
-  // set normal motor current
-  motor_driver.set_amplitude(motor_current_amplitude, true);
+  motor_pos += delta_motor_pos;
 }
 
 ServoController::ENCODER_TYPE& ServoController::get_encoder() {
@@ -222,69 +188,49 @@ ServoController::MOTOR_DRIVER_TYPE& ServoController::get_motor_driver() {
   return motor_driver;
 }
 
-float ServoController::encoder_angle_to_motor_pos(int32_t encoder_angle_raw) {
-  // TODO: use lut here
-  if(enc_to_pos_lut.size() == 0) {
-    int32_t encoder_cpr = encoder.get_rawcounts_per_rev();
-    return encoder_angle_raw*Constants::TWO_PI_F/encoder_cpr/(7.5f*4);
+float ServoController::get_pole_pair_count() {
+  return motor_pole_pair_count;
+}
+
+void ServoController::set_motor_enabled(bool enable, bool synchronize_field_angle) {
+  if(enable) {
+    // synchronize field angle to motor_pos
+    if(synchronize_field_angle) {
+      float start_field_angle = motor_pos_to_field_angle(motor_pos);
+      motor_driver.set_field_angle(start_field_angle);
+    }
+
+    motor_driver.set_amplitude_smooth(motor_current_amplitude, 100);
+    pos_controller.reset();
+    velocity_controller.reset();
+    velocity_lowpass.reset(0.0f);
+    motor_pos_prev = motor_pos;
+
   } else {
-    return enc_to_pos_lut.evaluate(encoder_angle_raw);
+    motor_driver.set_amplitude_smooth(0.0f, 100);
   }
+}
+
+// enable or disable servo loop update and encoder reads
+void ServoController::set_motor_update_enabled(bool enable) {
+  pos_controller.reset();
+  velocity_controller.reset();
+  velocity_lowpass.reset(0.0f);
+  motor_pos_prev = motor_pos;
+  motor_update_enabled = enable;
+}
+
+void ServoController::set_encoder_update_enabled(bool enable) {
+  pos_controller.reset();
+  velocity_controller.reset();
+  motor_pos_prev = motor_pos;
+  encoder_update_enabled = enable;
+}
+
+float ServoController::encoder_angle_to_motor_pos(int32_t encoder_angle_raw) {
+  return encoder_raw_to_motor_pos_lut.evaluate(encoder_angle_raw);
 }
 
 float ServoController::motor_pos_to_field_angle(float motor_pos) {
-  return motor_pos*motorpos_to_field_angle;
-}
-
-float ServoController::motor_velocity_to_field_velocity(float v) {
-  return v*motorpos_to_field_angle;
-}
-
-//*** FUNCTION ***********************************************************************************/
-
-bool build_motor_to_enc_angle_lut(
-            LookupTable& lut,
-            ServoController& servo_controller,
-            float min_motor_angle,
-            float max_motor_angle,
-            size_t size)
-{
-  LOG_INFO("Measuring motor to encoder angle lookup table...");
-  float speed = 1.0f;
-  float input_min = min_motor_angle;
-  float input_max = max_motor_angle;
-
-  lut.init(size, input_min, input_max);
-  // float initial_pos = servo_controller.read_position();
-  // move to starting position
-  servo_controller.move_to_open_loop(min_motor_angle, 2.0f);
-  servo_controller.get_encoder().reset_abs_angle(0); // Reset encoder to 0 at min_motor_angle
-
-  float step = float(input_max - input_min) / (size - 1);
-
-  // Measure in increasing direction
-  for (size_t i = 0; i < size; ++i) {
-    float target_motor_angle = input_min + step * i;
-    servo_controller.move_to_open_loop(target_motor_angle, speed);
-    // sleep_ms(0);
-    float encoder_angle_raw = servo_controller.get_encoder().read_abs_angle_raw();
-    lut.set_entry(i, encoder_angle_raw);
-  }
-
-  // Measure in decreasing direction (average with increasing direction)
-  for (size_t i = 0; i < size; ++i) {
-    float target_motor_angle = input_max - step * i; // Start from max and go down
-    servo_controller.move_to_open_loop(target_motor_angle, speed);
-    // sleep_ms(0);
-    float encoder_angle_raw = servo_controller.get_encoder().read_abs_angle_raw();
-    // Average with the previously recorded value
-    int idx = size-1-i;
-    lut.set_entry(idx, (lut.get_entry(idx) + encoder_angle_raw) / 2.0f);
-  }
-
-  // move to starting position
-  servo_controller.move_to_open_loop(min_motor_angle, 2.0f);
-
-  LOG_INFO(">finished");
-  return true;
+  return motor_pos_to_field_angle_lut.evaluate(motor_pos);
 }

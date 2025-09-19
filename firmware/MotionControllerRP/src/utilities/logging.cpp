@@ -70,10 +70,10 @@ void Logger::log(ELogLevel level, const char* fmt, va_list args) {
 
 const char* Logger::log_prefix(ELogLevel level) {
   switch (level) {
-    case ELogLevel::DEBUG: return "[DEBUG] ";
-    case ELogLevel::INFO:  return "";
-    case ELogLevel::WARN:  return "[WARNING] ";
-    case ELogLevel::ERROR: return "[ERROR] ";
+    case ELogLevel::DEBUG: return "D)";
+    case ELogLevel::INFO:  return "I)";
+    case ELogLevel::WARN:  return "W)";
+    case ELogLevel::ERROR: return "E)";
     default:               return "";
   }
 }
