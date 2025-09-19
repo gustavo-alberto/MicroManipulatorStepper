@@ -1,4 +1,4 @@
-## Micro Manipulator Stepper
+# Micro Manipulator Stepper
 
 This project contains an open source low-cost, easy-to-build motorized **XYZ Micro-Manipulator** motion control platform achieving submicron precision.
 It's designed for applications such as optical alignment, probing electronic components, and microscopy.
@@ -19,7 +19,27 @@ A 'magnetic gearing' approach increases the resolution of the low-cost magnetic 
 The device can be controlled via simple G-Code commands over a USB serial interface and is thus easily integrated into other projects.
 The firmware implements a complete motion planning stack with look-ahead for smooth and accurate path following capabilities.
 
-### ⚙ CAD-Files
+## ✨ NEW: Firmware v1.0.1
+
+This update improves calibration, homing, logging, and adds a Python API plus new G-Code commands.
+
+### Improvements
+- **Homing**: parallel homing support, higher repeatability, more accurate geometric reference  
+- **Joint calibration**: refined procedure, persistent flash storage (no recalibration after reboot)  
+- **Logging**: clearer and more detailed output  
+- **Python API**: easy device control from Python  
+
+### G-Code Commands
+- `G28` — Home joints (supports homing multiple axis simultanously for faster startup)
+- `G24` — Set pose command (directly sets servo targets, bypassing motion controller)  
+- `M17/M18` — Enable/Disable motors (with pose recovery from encoders on enable)  
+- `M51` — Read encoder values  
+- `M55` — Set servo loop parameters 
+- `M56` — Joint calibration (with save-to-flash option)  
+- `M57` — Read various information about the device state  
+- `M58` — Read firmware version  
+
+## ⚙ CAD-Files
 
 All CAD models are made in **FreeCAD** to​ allow everyone to view and modify the design without subscribing or paying for a proprietary CAD solution.
 Note that most components are already designed with the goal to make them easily machinable on a 3-Axis CNC-Mill.
@@ -36,12 +56,12 @@ Please note that FreeCAD version **1.1.0dev** was used, and the files might not 
 
 STL files for printing can be found here: [STL Files](construction/STL_3D_Printing/)
 
-### ⚙ Kinematic Model
+## ⚙ Kinematic Model
 
 The kinematic model is defined here: [kinematic_model_delta3d.cpp](firmware/MotionControllerRP/src/kinemtaic_models/kinematic_model_delta3d.cpp).
 Please check the dimensions of your build against the values set in the constructor. In particular, make sure the arm length matches.
 
-### ⚙ Electronics
+## ⚙ Electronics
 
 IMPORTANT: If you fabricated PCB verion v1.2 (see version label on the board) you need to drill out a misplaced via on diode D1 that shorts 5V rail to ground (See [repair image](electronics/pcb_v1.2_fix.jpg) ). The problem was fixed in v1.3.
 
@@ -53,7 +73,7 @@ For usual winding resistance of your motors, the device should be powered by $${
   <img src="images/ControllerPCB.jpg" alt="Image 2" style="flex: 1; object-fit: contain; height: 10vw;">
 </div>
 
-### ⚙ Firmware
+## ⚙ Firmware
 
 The firmware is written in C++ and takes some inspiration from the 'SimpleFOC' project. It aims to be streamlined and readable without any extra fuss, focusing on the hardware used in this project.
 It implements path planning with look-ahead and, unlike many other motion controller projects, supports true 6DOF-Pose interpolation and planning, making it ready for driving hexapod motion platforms; that may or may not be the next step for this project.
@@ -65,12 +85,12 @@ You may find configuration for pin numbers, motor type, and other parameters in 
   <img src="documentation/firmware/path_planning.png" alt="Image 2" width="49%">
 </div>
 
-#### Building and Flashing the Firmware
+### Building and Flashing the Firmware
 
 For building and flashing the firmware, Visual Studio Code (available for free on Windows and Linux) is recommended.
 Install the PlatformIO add-on and open the firmware folder. You can now build and flash the firmware like any other PlatformIO project.
 
-### ⚙ G-Code Interface
+## ⚙ G-Code Interface
 
 The firmware supports only a small subset of G-Code commands listed below.  
 Each command is acknowledged with either an **`ok`** or **`error`** response.  
@@ -88,5 +108,5 @@ The client must wait for an acknowledgment from the previous command before send
 | `M52`          | Get the number of items in the planner queue.                               |
 | `M53`          | Check if all moves are finished. Returns `1` if finished, `0` otherwise.    |
 
-# Youtube Video
+## Youtube Video
 [![Watch the video](images/thumbnail.jpg)](https://youtu.be/MgQbPdiuUTw)
