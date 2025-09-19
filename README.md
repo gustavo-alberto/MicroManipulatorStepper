@@ -37,7 +37,53 @@ This update improves calibration, homing, logging, and adds a Python API plus ne
 - `M55` — Set servo loop parameters 
 - `M56` — Joint calibration (with save-to-flash option)  
 - `M57` — Read various information about the device state  
-- `M58` — Read firmware version  
+- `M58` — Read firmware version
+
+## 🐍 NEW: Python-API
+
+The new Python API handles all serial communication and provides convenient command execution and debug message printing.
+The interface includes functions to home, move, and calibrate the device, as well as to query device information.
+Simply copy the [open_micro_stage_api.py](software/PythonAPI/open_micro_stage_api.py) file into your project, and you’re ready to get started.
+
+## Usage Example
+```python
+from open_micro_stage_api import OpenMicroStageInterface
+
+# create interface and connect
+oms = OpenMicroStageInterface(show_communication=True, show_log_messages=True)
+oms.connect('/dev/ttyACM0')
+
+# run this once to calibrate joints
+# for i in range(3): oms.calibrate_joint(i, save_result=True)
+
+# home device
+oms.home()
+
+# move to several x,y,z positions [mm]
+oms.move_to(0.0, 0.0, 0.0, f=10)
+oms.move_to(3.1, 4.1, 5.9, f=26)
+oms.move_to(0.0001, 0.0, 0.0, f=10)
+
+# wait for moves to finish
+oms.wait_for_stop()
+```
+
+## API Functions (most relevant functions only)
+```python
+connect(port, baud_rate=921600)
+disconnect()
+set_workspace_transform(transform)
+get_workspace_transform()
+home(axis_list=None)
+calibrate_joint(joint_index, save_result)
+move_to(x, y, z, f, move_immediately=False, blocking=True, timeout=1)
+dwell(time_s, blocking, timeout=1)
+set_max_acceleration(linear_accel, angular_accel)
+wait_for_stop(polling_interval_ms=10, disable_callbacks=True)
+set_servo_parameter(pos_kp=150, pos_ki=50000, vel_kp=0.2, vel_ki=100, vel_filter_tc=0.0025)
+enable_motors(enable)
+set_pose(x, y, z)
+```
 
 ## ⚙ CAD-Files
 
