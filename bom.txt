@@ -32,9 +32,9 @@
 
 * 2 	4.7k Resistor 0603				(optional)
 
-* 1		2 Pin Power Header
-* 4 	4 Pin Header
-* 1		8 Pin Header
+* 1		2 Pin Power Header				7.5 mm pitch
+* 4 	4 Pin Header					2.5 mm pitch
+* 1		8 Pin Header					2.0 mm pitch
 
 * 3		NEMA 17 Stepper Motor (Body length <= 38mm)
 
