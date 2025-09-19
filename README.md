@@ -21,7 +21,7 @@ The firmware implements a complete motion planning stack with look-ahead for smo
 
 ## ✨ NEW: Firmware v1.0.1
 
-This update improves calibration, homing, logging, and adds a Python API plus new G-Code commands.
+This update improves calibration, homing, logging, and adds several new G-Code commands.
 
 ### Improvements
 - **Homing**: parallel homing support, higher repeatability, more accurate geometric reference  
