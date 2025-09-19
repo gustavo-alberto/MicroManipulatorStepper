@@ -6,7 +6,10 @@ It's designed for applications such as optical alignment, probing electronic com
 Check out the YouTube video for more information about the device and how it is built:<br>
 [An Open Source Motorized XYZ Micro-Manipulator - Affordable sub µm Motion Control](https://youtu.be/MgQbPdiuUTw)
 
-[![DeviceInMotion](images/overview.gif)](https://youtu.be/MgQbPdiuUTw)
+<div style="display: flex; gap: 5%;">
+  <img src="images/overview.gif" alt="Image 1" width="45%">
+  <img src="images/microscopy_die.gif" alt="Image 2" width="45%">
+</div>
 
 Thanks to its parallel kinematic structure and miniature ball joints, it achieves good mechanical stiffness and a large range of motion.
 The motors are off the shelf stepper motors dr​iven by a 30 kHz closed loop controller and a very precise PWM signal.
@@ -15,8 +18,6 @@ A 'magnetic gearing' approach increases the resolution of the low-cost magnetic 
 
 The device can be controlled via simple G-Code commands over a USB serial interface and is thus easily integrated into other projects.
 The firmware implements a complete motion planning stack with look-ahead for smooth and accurate path following capabilities.
-
-![DeviceInMotion](images/microscopy_die.gif)
 
 ### ⚙ CAD-Files
 
@@ -60,8 +61,8 @@ It implements path planning with look-ahead and, unlike many other motion contro
 You may find configuration for pin numbers, motor type, and other parameters in [hw_config.h](firmware/MotionControllerRP/src/hw_config.h). Please check them before uploading the firmware.
 
 <div style="display: flex; gap: 5%;">
-  <img src="documentation/firmware/firmware_overview.png" alt="Image 1" width="50%">
-  <img src="documentation/firmware/path_planning.png" alt="Image 2" width="50%">
+  <img src="documentation/firmware/firmware_overview.png" alt="Image 1" width="45%">
+  <img src="documentation/firmware/path_planning.png" alt="Image 2" width="45%">
 </div>
 
 #### Building and Flashing the Firmware
