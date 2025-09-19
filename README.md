@@ -1,16 +1,17 @@
 ## Micro Manipulator Stepper
 
-This project contains an open source low-cost, easy-to-build motorized **XYZ Micro-Manipulator** motion control platform achieving sub micrometer precision.
+This project contains an open source low-cost, easy-to-build motorized **XYZ Micro-Manipulator** motion control platform achieving submicron precision.
 It's designed for applications such as optical alignment, probing electronic components, and microscopy.
 
 Check out the YouTube video for more information about the device and how it is built:
 
-[![DeviceInMotion](images/overview.gif)](https://youtu.be/MgQbPdiuUTw)
+# Youtube Video
+[![Watch the video](images/thumbnail.jpg)](https://youtu.be/MgQbPdiuUTw)
 
 Thanks to its parallel kinematic structure and miniature ball joints, it achieves good mechanical stiffness and a large range of motion.
 The motors are off the shelf stepper motors dr​iven by a 30 kHz closed loop controller and a very precise PWM signal.
 A 'magnetic gearing' approach increases the resolution of the low-cost magnetic rotary encoders by a factor of 30 allowing for steps down to 50nm
-(**Please mind the difference between resolution and accuracy**. The absolute accuracy is much lower).
+(**Please mind the difference between resolution and accuracy**. The absolute accuracy is significantly worse.
 
 The device can be controlled via simple G-Code commands over a USB serial interface and is thus easily integrated into other projects.
 The firmware implements a complete motion planning stack with look-ahead for smooth and accurate path following capabilities.
@@ -29,8 +30,10 @@ You can also 3D-Print the parts but have to live with thermal drift (carbon fill
 
 <br>
 
-The files can be found here: [CAD Models](construction).
+The CAD files can be found here: [CAD Models](construction).
 Please note that FreeCAD version **1.1.0dev** was used, and the files might not work with older versions.
+
+STL files for printing can be found here: [STL Files](construction/STL_3D_Printing/)
 
 ### ⚙ Kinematic Model
 
@@ -39,7 +42,7 @@ Please check the dimensions of your build against the values set in the construc
 
 ### ⚙ Electronics
 
-IMPORTANT: If you fabricated PCB verion v1.2 (see version label on the board) you need to drill out a misplaced via on diode D1 that shorts 5V rail to ground. The problem was fixed in v1.3.
+IMPORTANT: If you fabricated PCB verion v1.2 (see version label on the board) you need to drill out a misplaced via on diode D1 that shorts 5V rail to ground (See [repair image](electronics/pcb_v1.2_fix.jpg) ). The problem was fixed in v1.3.
 
 The electronics are designed in **KiCAD** and only commonly available modules (motor drivers and MCU boards) are used and connected by a simple PCB. No SMD soldering is required to populate the board to make the build extra accessible.
 For usual winding resistance of your motors, the device should be powered by $${\color{lightgreen} 5V-6V }$$ (2A) to keep current and heating to a reasonable level.
@@ -83,9 +86,3 @@ The client must wait for an acknowledgment from the previous command before send
 | `M51`          | Get motion controller and servo loop update frequency.                     |
 | `M52`          | Get the number of items in the planner queue.                               |
 | `M53`          | Check if all moves are finished. Returns `1` if finished, `0` otherwise.    |
-
-
-
-
-# Youtube Video
-[![Watch the video](images/thumbnail.jpg)](https://youtu.be/MgQbPdiuUTw)
