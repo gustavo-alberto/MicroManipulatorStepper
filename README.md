@@ -143,8 +143,8 @@ Each command is acknowledged with either an **`ok`** or **`error`** response.
 
 If a command provides additional information (e.g., the *get position* command), that information is returned **before** the `ok` message.  
 The client must wait for an acknowledgment from the previous command before sending the next one—otherwise, behavior is undefined.
-| Command        | Description                                                                 |
-|----------------|-----------------------------------------------------------------------------|
+| Command           | Description                                                                 |
+|-------------------|-----------------------------------------------------------------------------|
 | `G0 X Y Z F`   | Move the end-effector in a straight line to the specified position. <br>• `X`, `Y`, `Z`: target positions <br>• `F`: feed rate |
 | `G1 X Y Z F`   | Same as `G0`.                                                              |
 | `G4 S/P`       | Dwell/pause for a specified time. <br>• `S`: seconds <br>• `P`: milliseconds |
