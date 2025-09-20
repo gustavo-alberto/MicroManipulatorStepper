@@ -74,7 +74,7 @@ This update improves calibration, homing, logging, and adds several new G-Code c
 - **Joint calibration**: refined procedure, persistent flash storage (no recalibration after reboot)  
 - **Logging**: clearer and more detailed output  
 
-### G-Code Commands
+### New G-Code Commands
 - `G28` — Home joints (supports homing multiple axis simultanously for faster startup)
 - `G24` — Set pose command (directly sets servo targets, bypassing motion controller)  
 - `M17/M18` — Enable/Disable motors (with pose recovery from encoders on enable)  
