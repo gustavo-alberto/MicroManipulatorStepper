@@ -73,7 +73,6 @@ This update improves calibration, homing, logging, and adds several new G-Code c
 - **Homing**: parallel homing support, higher repeatability, more accurate geometric reference  
 - **Joint calibration**: refined procedure, persistent flash storage (no recalibration after reboot)  
 - **Logging**: clearer and more detailed output  
-- **Python API**: easy device control from Python  
 
 ### G-Code Commands
 - `G28` — Home joints (supports homing multiple axis simultanously for faster startup)
