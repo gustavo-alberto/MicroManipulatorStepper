@@ -23,7 +23,7 @@ The firmware implements a complete motion planning stack with look-ahead for smo
 
 The lightweight Python API handles all serial communication and provides convenient command execution and debug message printing.
 The interface includes functions to home, move, and calibrate the device, as well as to query device information.
-Simply copy the [open_micro_stage_api.py](software/PythonAPI/open_micro_stage_api.py) file into your project (and install the dependencies in requirements.txt), and you’re ready to get started.
+Simply copy the [open_micro_stage_api.py](software/PythonAPI/open_micro_stage_api.py) file into your project (also install the dependencies in requirements.txt), and you’re ready to get started.
 
 ## Usage Example
 ```python
