@@ -18,6 +18,7 @@
 * 6      M3 Grub Screw                  M3x4						
 
 --- Electronics -------------------------------------------------------------------
+
   Qty.   Name                            Comments
 
 * 1		DC-DC Step Down Module		 	4.75-23V Step-Down Buck Converter Module
@@ -39,6 +40,7 @@
 * 3		NEMA 17 Stepper Motor (Body length <= 38mm)
 
 --- 3D Printing  ------------------------------------------------------------------
+
   Qty.   Name                            Comments
 
 * 3		WireFlexureMount		 	0.4mm+ nozzle will probably require post-processing.

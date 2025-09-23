@@ -1,4 +1,4 @@
-# Micro Manipulator Stepper
+# Open Micro Manipulator
 
 This project contains an open source low-cost, easy-to-build motorized **XYZ Micro-Manipulator** motion control platform achieving submicron precision.
 It's designed for applications such as optical alignment, probing electronic components, and microscopy.
@@ -19,31 +19,11 @@ A 'magnetic gearing' approach increases the resolution of the low-cost magnetic 
 The device can be controlled via simple G-Code commands over a USB serial interface and is thus easily integrated into other projects.
 The firmware implements a complete motion planning stack with look-ahead for smooth and accurate path following capabilities.
 
-## ✨ NEW: Firmware v1.0.1
-
-This update improves calibration, homing, logging, and adds a Python API plus new G-Code commands.
-
-### Improvements
-- **Homing**: parallel homing support, higher repeatability, more accurate geometric reference  
-- **Joint calibration**: refined procedure, persistent flash storage (no recalibration after reboot)  
-- **Logging**: clearer and more detailed output  
-- **Python API**: easy device control from Python  
-
-### G-Code Commands
-- `G28` — Home joints (supports homing multiple axis simultanously for faster startup)
-- `G24` — Set pose command (directly sets servo targets, bypassing motion controller)  
-- `M17/M18` — Enable/Disable motors (with pose recovery from encoders on enable)  
-- `M51` — Read encoder values  
-- `M55` — Set servo loop parameters 
-- `M56` — Joint calibration (with save-to-flash option)  
-- `M57` — Read various information about the device state  
-- `M58` — Read firmware version
-
 ## 🐍 NEW: Python-API
 
-The new Python API handles all serial communication and provides convenient command execution and debug message printing.
+The lightweight Python API handles all serial communication and provides convenient command execution and debug message printing.
 The interface includes functions to home, move, and calibrate the device, as well as to query device information.
-Simply copy the [open_micro_stage_api.py](software/PythonAPI/open_micro_stage_api.py) file into your project, and you’re ready to get started.
+Simply copy the [open_micro_stage_api.py](software/PythonAPI/open_micro_stage_api.py) file into your project (also install the dependencies in requirements.txt), and you’re ready to get started.
 
 ## Usage Example
 ```python
@@ -76,14 +56,33 @@ set_workspace_transform(transform)
 get_workspace_transform()
 home(axis_list=None)
 calibrate_joint(joint_index, save_result)
-move_to(x, y, z, f, move_immediately=False, blocking=True, timeout=1)
-dwell(time_s, blocking, timeout=1)
-set_max_acceleration(linear_accel, angular_accel)
-wait_for_stop(polling_interval_ms=10, disable_callbacks=True)
-set_servo_parameter(pos_kp=150, pos_ki=50000, vel_kp=0.2, vel_ki=100, vel_filter_tc=0.0025)
-enable_motors(enable)
+move_to(x, y, z, f, move_immediately, blocking, timeout)
 set_pose(x, y, z)
+dwell(time_s, blocking, timeout)
+enable_motors(enable)
+wait_for_stop(polling_interval_ms, disable_callbacks)
+set_max_acceleration(linear_accel, angular_accel)
+set_servo_parameter(pos_kp, pos_ki, vel_kp, vel_ki, vel_filter_tc)
 ```
+
+## ✨ NEW: Firmware v1.0.1
+
+This update improves calibration, homing, logging, and adds several new G-Code commands.
+
+### Improvements
+- **Homing**: parallel homing support, higher repeatability, more accurate geometric reference  
+- **Joint calibration**: refined procedure, persistent flash storage (no recalibration after reboot)  
+- **Logging**: clearer and more detailed output  
+
+### New G-Code Commands
+- `G28` — Home joints (supports homing multiple axis simultanously for faster startup)
+- `G24` — Set pose command (directly sets servo targets, bypassing motion controller)  
+- `M17/M18` — Enable/Disable motors (with pose recovery from encoders on enable)  
+- `M51` — Read encoder values  
+- `M55` — Set servo loop parameters 
+- `M56` — Joint calibration (with save-to-flash option)  
+- `M57` — Read various information about the device state  
+- `M58` — Read firmware version
 
 ## ⚙ CAD-Files
 
@@ -143,16 +142,26 @@ Each command is acknowledged with either an **`ok`** or **`error`** response.
 
 If a command provides additional information (e.g., the *get position* command), that information is returned **before** the `ok` message.  
 The client must wait for an acknowledgment from the previous command before sending the next one—otherwise, behavior is undefined.
-
-| Command        | Description                                                                 |
-|----------------|-----------------------------------------------------------------------------|
-| `G0 X Y Z F`   | Move the end-effector in a straight line to the specified position. <br> • `X`: target position on X-axis <br> • `Y`: target position on Y-axis <br> • `Z`: target position on Z-axis <br> • `F`: feed rate (movement speed) |
-| `G1 X Y Z F`   | Same as `G0`. |
-| `M204 L A`     | Set current acceleration. <br> • `L`: linear acceleration (m/s²) <br> • `A`: angular acceleration (rad/s²) |
-| `M50`          | Get current actuator pose (position).                                       |
-| `M51`          | Get motion controller and servo loop update frequency.                     |
+| Command           | Description                                                                 |
+|-------------------|-----------------------------------------------------------------------------|
+| `G0 X Y Z F`   | Move the end-effector in a straight line to the specified position. <br>• `X`, `Y`, `Z`: target positions <br>• `F`: feed rate |
+| `G1 X Y Z F`   | Same as `G0`.                                                              |
+| `G4 S/P`       | Dwell/pause for a specified time. <br>• `S`: seconds <br>• `P`: milliseconds |
+| `G24 X Y Z A B C` | Directly set current pose for servo loops with optional rotation vector* `A`, `B`, `C`. |
+| `G28 A-F`      | Home one or more joints. <br>• Optional joint selection `A`–`F`.           |
+| `M17`          | Enable motors and read current pose as the start pose.                     |
+| `M18`          | Disable motors.                                                            |
+| `M50`          | Get current internal pose. (Encoders are not read here)                                   |
+| `M51`          | Get current encoder angles (in degrees) and raw encoder values.              |
 | `M52`          | Get the number of items in the planner queue.                               |
-| `M53`          | Check if all moves are finished. Returns `1` if finished, `0` otherwise.    |
+| `M53`          | Check if all planned moves are finished (`1` = finished, `0` = not finished). |
+| `M55 A B C D F` | Set servo loop parameters. <br>• `A`, `B`: position PI controller gains (P and I) <br>• `C`, `D`: velocity PI controller gains (P and I) <br>• `F`: velocity filter time constant |
+| `M56 J S`      | Calibrate a joint. <br>• `J`: joint index <br>• `S`: save calibration result |
+| `M57`          | Get device and servo loop info: homing/calibration state, angles, loop frequencies, and file list. |
+| `M58`          | Get firmware version.                                                      |
+| `M204 L A`     | Set linear and angular acceleration. <br>• `L`: linear acceleration <br>• `A`: angular acceleration |
+
+*Note: The communication protocol uses 3D vectors for rotations. The direction represents the rotation axis and the length of the vector represents the angle of rotation around the axis.
 
 ## Youtube Video
 [![Watch the video](images/thumbnail.jpg)](https://youtu.be/MgQbPdiuUTw)
