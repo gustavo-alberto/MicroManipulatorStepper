@@ -13,8 +13,8 @@
 #include <algorithm>
 
 PathPlanner::PathPlanner(IKinemtaicModel* kinematic_model, float time_step) {
-  segment_time_step = time_step;
-  kinematic_model = kinematic_model;
+  PathPlanner::segment_time_step = time_step;
+  PathPlanner::kinematic_model = kinematic_model;
 
   junction_deviation.linear = 0.0001;  // mm
   junction_deviation.angular = 0.001; // rad
