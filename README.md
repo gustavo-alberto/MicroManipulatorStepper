@@ -19,6 +19,12 @@ A 'magnetic gearing' approach increases the resolution of the low-cost magnetic 
 The device can be controlled via simple G-Code commands over a USB serial interface and is thus easily integrated into other projects.
 The firmware implements a complete motion planning stack with look-ahead for smooth and accurate path following capabilities.
 
+
+## 💬 NEW: Discord Server
+
+Visit the projects community [Discord Server](https://discord.gg/km6RvSvX) to meet and discuss subjects related to the project,
+get help for the build or share ideas and applications. 
+
 ## 🐍 NEW: Python-API
 
 The lightweight Python API handles all serial communication and provides convenient command execution and debug message printing.
