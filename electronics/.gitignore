@@ -24,3 +24,10 @@ fp-info-cache
 
 # Footprint association file (exported from Pcbnew)
 *.cmp
+
+# Kicad default backup folder
+*-backups/
+
+# Gerber files
+*.g*
+*.drl
