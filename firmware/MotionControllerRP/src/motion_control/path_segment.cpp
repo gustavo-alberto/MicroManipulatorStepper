@@ -7,7 +7,7 @@
 
 #include "path_segment.h"
 #include "utilities/logging.h"
-#include "kinemtaic_models/kinematic_model_base.h"
+#include "kinematic_models/kinematic_model_base.h"
 
 //--- MotionProfileConstAcc -------------------------------------------------------------
 
@@ -248,7 +248,7 @@ bool JointSpacePathSegment::is_initialized() {
 
 JointSpacePathSegmentGenerator::JointSpacePathSegmentGenerator(
   const CartesianPathSegment* path_segment,
-  IKinemtaicModel* kinematic_model,
+  IKinematicModel* kinematic_model,
   float time_step)
 {
   JointSpacePathSegmentGenerator::path_segment = path_segment;

@@ -9,11 +9,11 @@
 
 class Pose6DF;
 
-//--- IKinemtaicModel -------------------------------------------------------------------
+//--- IKinematicModel -------------------------------------------------------------------
 
-class IKinemtaicModel {
+class IKinematicModel {
   public:
-    virtual ~IKinemtaicModel() {};
+    virtual ~IKinematicModel() {};
 
     // returns the number of joints
     virtual int get_joint_count();

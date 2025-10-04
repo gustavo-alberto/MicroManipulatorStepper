@@ -10,7 +10,7 @@
 #include "hw_config.h"
 #include "utilities/logging.h"
 #include "utilities/utilities.h"
-#include "kinemtaic_models/kinematic_model_delta3d.h"
+#include "kinematic_models/kinematic_model_delta3d.h"
 #include "servo_control/homing_controller.h"
 #include "servo_control/actuator_calibration.h"
 #include "pico/multicore.h"

@@ -14,7 +14,7 @@
 
 //*** CLASS *****************************************************************************
 
-class IKinemtaicModel;
+class IKinematicModel;
 
 //--- PathPlanner -----------------------------------------------------------------------
 
@@ -24,11 +24,11 @@ class PathPlanner {
     static constexpr int JS_QUEUE_SIZE = 32;
     
   public:
-    PathPlanner(IKinemtaicModel* kinematic_model, float time_step);
+    PathPlanner(IKinematicModel* kinematic_model, float time_step);
     ~PathPlanner();
 
     // sets the kinematic model for foreward and inverse kinematic calculations
-    void set_kinematic_model(IKinemtaicModel* kinematic_model);
+    void set_kinematic_model(IKinematicModel* kinematic_model);
 
     // adds a new cartesian space path segment to the planner queue
     bool add_cartesian_path_segment(const CartesianPathSegment& path_segment);
@@ -67,7 +67,7 @@ class PathPlanner {
     RingBuffer<CartesianPathSegment, CT_QUEUE_SIZE> ct_path_segment_queue;
     RingBuffer<JointSpacePathSegment, JS_QUEUE_SIZE> js_path_segment_queue;
 
-    IKinemtaicModel* kinematic_model;
+    IKinematicModel* kinematic_model;
     JointSpacePathSegmentGenerator* segment_generator = nullptr;
     float segment_time_step;
     LinearAngular junction_deviation;
