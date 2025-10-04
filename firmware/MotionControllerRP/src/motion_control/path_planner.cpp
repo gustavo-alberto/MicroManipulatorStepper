@@ -12,7 +12,7 @@
 
 #include <algorithm>
 
-PathPlanner::PathPlanner(IKinemtaicModel* kinematic_model, float time_step) {
+PathPlanner::PathPlanner(IKinematicModel* kinematic_model, float time_step) {
   PathPlanner::segment_time_step = time_step;
   PathPlanner::kinematic_model = kinematic_model;
 
@@ -23,7 +23,7 @@ PathPlanner::PathPlanner(IKinemtaicModel* kinematic_model, float time_step) {
 PathPlanner::~PathPlanner() {
 }
 
-void PathPlanner::set_kinematic_model(IKinemtaicModel* kinematic_model) {
+void PathPlanner::set_kinematic_model(IKinematicModel* kinematic_model) {
   PathPlanner::kinematic_model = kinematic_model;
 }
 

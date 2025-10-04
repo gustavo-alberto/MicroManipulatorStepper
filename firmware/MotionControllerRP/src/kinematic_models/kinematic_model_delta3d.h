@@ -16,9 +16,9 @@
 
 class Pose6DF;
 
-//--- KinemtaicModel_Delta3D ------------------------------------------------------------
+//--- KinematicModel_Delta3D ------------------------------------------------------------
 
-class KinematicModel_Delta3D : public IKinemtaicModel {
+class KinematicModel_Delta3D : public IKinematicModel {
   public:
     KinematicModel_Delta3D();
 
