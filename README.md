@@ -169,5 +169,14 @@ The client must wait for an acknowledgment from the previous command before send
 
 *Note: The communication protocol uses 3D vectors for rotations. The direction represents the rotation axis and the length of the vector represents the angle of rotation around the axis.
 
+## Support
+
+If you'd like to support this project, consider the following:
+
+- **Contribute to the build guide** – Help improve or expand the build instructions by submitting pull requests or opening issues with suggestions.
+- **Characterize typical radial stepper motor shaft error motion** – Measure radial error motion of the shaft of multiple Nema-17 stepper motors (see Cylos Garage for more information about the subject: https://www.youtube.com/watch?v=gt2gK-oxy5s).
+- **Give feedback on the build experience** – Let us know what worked, what didn’t, and how the process could be smoother for others.
+- **Support the project on Ko-fi** – If you find this project valuable, you can support it financially via [Ko-fi](https://ko-fi.com/diffrectionlimited).
+
 ## Youtube Video
 [![Watch the video](images/thumbnail.jpg)](https://youtu.be/MgQbPdiuUTw)
