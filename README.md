@@ -22,7 +22,7 @@ The firmware implements a complete motion planning stack with look-ahead for smo
 
 ## 💬 NEW: Discord Server
 
-Visit the projects community [Discord Server](https://discord.gg/km6RvSvX) to meet and discuss subjects related to the project,
+Visit the projects community [Discord Server](https://discord.gg/maRvMVpa2Q) to meet and discuss subjects related to the project,
 get help for the build or share ideas and applications. 
 
 ## 🐍 NEW: Python-API
