@@ -1,23 +1,23 @@
 # Bill of Materials (BOM)
 
 ## Mechanics
-| Name | Qty | Description | Comments | Suggested link |
-|------|-----|--------------|-----------|----------------|
+| Name | Qty | Description | Comments | Suggested link | Image |
+|------|-----|-------------|----------|----------------|-------|
 | Steel ball | 12 | Ø1.25 mm (0.05") | Precision G10 or better. Can be sourced from small ball bearings | |
-| PU stretch cord | 1 m | Ø1mm | e.g. "Stretch Magic" or "Magic String" | [Aliexpress](https://www.aliexpress.us/item/3256805953910514.html)|
-| Neodym Cylinder Magnet | 70 | Ø3mm h=4 mm | N42 Grade | [Ebay Link](https://www.ebay.de/itm/365333642187?var=635110190027) |
-| Brass Pipe | 1 m | OD=Ø2mm ID=Ø1 mm |  | [Amazon](https://a.co/d/1pRFmtf)|
+| PU stretch cord | 1 m | Ø1mm | e.g. "Stretch Magic" or "Magic String" | [Aliexpress](https://www.aliexpress.us/item/3256805953910514.html)| ![Pu strech cord](images/BOM/PU-stretch-cord.png)|
+| Neodym Cylinder Magnet | 70 | Ø3mm h=4 mm | N42 Grade | [Ebay Link](https://www.ebay.de/itm/365333642187?var=635110190027)|
+| Brass Pipe | 1 m | OD=Ø2mm ID=Ø1 mm |  | [Amazon](https://a.co/d/1pRFmtf)| ![Brass Pipe](images/BOM/brass-pipe.png)|
 | M2 Screw | 12 | M2×12 mm, Countersunk |  | |
 | M3 Grub Screw | 6 | M3×4 |  | |
 
 ## Electronics
-| Name | Qty | Description | Comments | Suggested link |
-|------|-----|--------------|-----------|----------------|
-| DC-DC Step Down Module | 1 | 4.75–23 V Step-Down Buck Converter |  | [Aliexpress](https://www.aliexpress.us/item/3256806752772875.html)|
+| Name | Qty | Description | Comments | Suggested link | Image |
+|------|-----|-------------|----------|----------------|-------|
+| DC-DC Step Down Module | 1 | 4.75–23 V Step-Down Buck Converter |  | [Aliexpress](https://www.aliexpress.us/item/3256806752772875.html)| ![DC-DC Step Down](images/BOM/DC-DC-step-down.png)|
 | (1N5819) OR (PMEG4010) | 1 | Diode (through-hole or SMD) |  | |
-| Raspberry Pi Pico 2 | 1 | Microcontroller board |  | |
-| MT6835 Magnetic Encoder Module | 3 | Magnetic encoder |  | [Aliexpress](https://www.aliexpress.us/item/3256808005140674.html)|
-| TB6612FNG Driver | 3 | |  | [Aliexpress](https://www.aliexpress.us/item/3256806060073976.html)|
+| Raspberry Pi Pico 2 | 1 | Microcontroller board |  | | ![Raspberry Pi Pico 2](images/BOM/RaspberryPi-Pico-2.png)|
+| MT6835 Magnetic Encoder Module | 3 | Magnetic encoder |  | [Aliexpress](https://www.aliexpress.us/item/3256808005140674.html)| ![MT6835 Magnetic Encoder Module](images/BOM/MT6835-magnetic-encoder-module.png)|
+| TB6612FNG Driver | 3 | |  | [Aliexpress](https://www.aliexpress.us/item/3256806060073976.html)| ![TB6612FNG Driver](images/BOM/TB6612FNG-driver.png)|
 | 470 µF Electrolytic Capacitor | 3 | > 100 µF | anything > 100µF will work well | |
 | 10 µF Ceramic Capacitor 0603 | 3 | Optional |  | |
 | 4.7 k Resistor 0603 | 2 | Optional |  | |
@@ -27,11 +27,11 @@
 | NEMA 17 Stepper Motor | 3 | Body ≤ 38 mm | Body length <= 38mm | |
 
 ## 3D Printing
-| Name | Qty | Description | Comments | Suggested link |
-|------|-----|--------------|-----------|----------------|
-| WireFlexureMount | 3 |  | 0.4 mm+ nozzle may require post-processing | |
-| RubberBandCollet | 3 |  | 0.4 mm+ nozzle may require post-processing | |
-| BallJointMount | 3 |  | 0.4 mm+ nozzle may require post-processing | |
-| Motor Mount | 3 |  |  | |
-| End Effector | 1 |  |  | |
-| Base Block | 1 |  |  | |
+| Name | Qty | Description | Comments | Image |
+|------|-----|-------------|----------|-------|
+| WireFlexureMount | 3 |  | 0.4 mm+ nozzle may require post-processing | ![Wire Flexure Mount](images/BOM/WireFlexureMount.png)|
+| RubberBandCollet | 3 |  | 0.4 mm+ nozzle may require post-processing | ![Rubber Band Collet](images/BOM/RubberBandCollet.png)|
+| BallJointMount | 3 |  | 0.4 mm+ nozzle may require post-processing | ![Ball Joint Mount](images/BOM/BallJointMount.png)|
+| Motor Mount | 3 |  |  | ![Motor Mount](images/BOM/MotorMount.png)|
+| End Effector | 1 |  |  | ![End Effector](images/BOM/EndEffector.png)|
+| Base Block | 1 |  |  | ![Base Block](images/BOM/baseblock.png)|
