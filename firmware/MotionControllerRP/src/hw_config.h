@@ -13,7 +13,7 @@
 #define HOMING_FINISH_POS 0.5f        // in rad
 
 
-#define SINGLE_AXIS_BOARD
+// #define SINGLE_AXIS_BOARD
 #ifndef SINGLE_AXIS_BOARD
   // Pins for 3Axis Board
   #define PIN_BUILTIN_LED 23

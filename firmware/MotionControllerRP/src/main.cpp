@@ -68,7 +68,6 @@ void overclock() {
 }
 
 void set_led_color(uint8_t r, uint8_t g, uint8_t b) {
-  return;
   strip.neoPixelSetValue(0, r, g, b, false);
   delayMicroseconds(2000);
   strip.neoPixelShow();

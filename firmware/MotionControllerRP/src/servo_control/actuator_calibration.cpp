@@ -22,7 +22,8 @@ bool measure_calibration_data(
             ServoController& servo_controller,
             float calibration_range,
             float field_velocity,
-            size_t table_size)
+            size_t table_size,
+            bool print_measurements)
 {
   LOG_INFO("Measuring motor to encoder angle lookup table...");
   int sample_count = table_size*4;
@@ -46,6 +47,9 @@ bool measure_calibration_data(
       float field_angle = motor_driver.get_field_angle();
       float motor_pos = (field_angle-start_field_angle)/pole_pair_count;
       // TODO: read motor_pos from precise reference encoder
+
+      if(print_measurements)
+        LOG_INFO("%f, %15.10f, %15.10f", encoder_angle_raw, field_angle, motor_pos);
 
       encoder_angle_and_motor_pos.push_back({encoder_angle_raw, motor_pos});
       motor_pos_and_field_angle.push_back({motor_pos, field_angle});

@@ -18,5 +18,6 @@ bool measure_calibration_data(
   ServoController& servo_controller,
   float field_angle_range,
   float field_velocity,
-  size_t size);
+  size_t size,
+  bool print_measurements);
 

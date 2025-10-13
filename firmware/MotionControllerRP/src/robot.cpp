@@ -58,7 +58,7 @@ void RobotJoint::init(int joint_idx) {
   servo_controller->set_motor_enabled(false, false);
 }
 
-bool RobotJoint::calibrate() {
+bool RobotJoint::calibrate(bool print_measurements) {
   LOG_INFO("Joint-%i: calibrating joint...", joint_idx);
 
   HomingController homing_controller;
@@ -77,7 +77,8 @@ bool RobotJoint::calibrate() {
                                      *servo_controller, 
                                      CALIBRATION_RANGE*DEG_TO_RAD,
                                      CALIBRATION_FIELD_VELOCITY, 
-                                     256);
+                                     256,
+                                     print_measurements);
   if(!ok) {
     LOG_ERROR("Joint-%i: calibrating failed", joint_idx);
     return false;
@@ -468,7 +469,7 @@ bool Robot::home(uint8_t joint_mask) {
   return homing_successful;
 }
 
-bool Robot::calibrate_joint(int joint_idx, bool store_calibration) {
+bool Robot::calibrate_joint(int joint_idx, bool store_calibration, bool print_measurements) {
   if(joint_idx<0 || joint_idx >= NUM_JOINTS)
     return false;
 
@@ -478,7 +479,7 @@ bool Robot::calibrate_joint(int joint_idx, bool store_calibration) {
   enable_servo_control(false);
   spin_lock_unsafe_blocking(joints_spin_lock);
 
-  bool calibration_ok = joint->calibrate();
+  bool calibration_ok = joint->calibrate(print_measurements);
   if(!calibration_ok) {
     spin_unlock_unsafe(joints_spin_lock);
     return false;
@@ -634,6 +635,7 @@ void Robot::process_machine_command(const GCodeCommand& cmd, std::string& reply)
     reply += "ok\n";
   }
 
+  // print lookup table
   if(cmd.get_command() == "M59") {
     int idx = (int)cmd.get_value('J', 0);
     joints[idx]->servo_controller->get_enc_to_pos_lut().print_to_log();
@@ -776,7 +778,8 @@ void Robot::process_home_command(const GCodeCommand& cmd, std::string& reply) {
 void Robot::process_calibrate_joint_command(const GCodeCommand& cmd, std::string& reply) {
   int idx = cmd.get_value('J', 0);
   bool store_calibration = cmd.has_word('S');
+  bool print_measurements = cmd.has_word('P');
 
-  bool ok = calibrate_joint(idx, store_calibration);
+  bool ok = calibrate_joint(idx, store_calibration, print_measurements);
   reply = ok ? "ok\n" : "error\n";
 }

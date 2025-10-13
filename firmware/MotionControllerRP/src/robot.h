@@ -62,7 +62,7 @@ class RobotJoint {
     ~RobotJoint();
 
     void init(int joint_idx);
-    bool calibrate();
+    bool calibrate(bool print_measurements);
     void update(float dt, float one_over_dt);
     void update_target(float p, float v);
     bool load_calibration();
@@ -94,7 +94,7 @@ class Robot : public ICommandProcessor {
     void init();
     void calibrate();
     bool home(uint8_t joint_mask=255);
-    bool calibrate_joint(int joint_idx, bool store_calibration);
+    bool calibrate_joint(int joint_idx, bool store_calibration, bool print_measurements);
     void enable_servo_control(bool enable);  // enables joint servo controll if homed and calibrated
 
     void update_command_parser();            // called from main loop
