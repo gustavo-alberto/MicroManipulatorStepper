@@ -130,7 +130,7 @@ class Robot : public ICommandProcessor {
     RobotJoint* volatile joints[NUM_JOINTS];
     spin_lock_t* joints_spin_lock = nullptr;
 
-    IKinemtaicModel* kinematic_model;
+    IKinematicModel* kinematic_model;
     PathPlanner path_planner;
     MotionController motion_controller;
     CommandParser command_parser;

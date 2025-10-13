@@ -17,7 +17,7 @@ constexpr int NUM_JOINTS = 3;
 
 //*** CLASS *****************************************************************************
 
-class IKinemtaicModel;
+class IKinematicModel;
 
 //--- JointInfo -------------------------------------------------------------------------
 
@@ -127,7 +127,7 @@ class JointSpacePathSegmentGenerator {
   public:
     JointSpacePathSegmentGenerator(
       const CartesianPathSegment* path_segment,
-      IKinemtaicModel* kinematic_model,
+      IKinematicModel* kinematic_model,
       float time_step
     );
 
@@ -143,6 +143,6 @@ class JointSpacePathSegmentGenerator {
     float current_joint_pos[NUM_JOINTS];  // current joint positions
 
     const CartesianPathSegment* path_segment = nullptr;
-    IKinemtaicModel* kinematic_model;
+    IKinematicModel* kinematic_model;
 };
 

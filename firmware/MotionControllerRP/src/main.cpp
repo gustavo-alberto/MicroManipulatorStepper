@@ -18,7 +18,7 @@
 #include "robot.h"
 #include "utilities/logging.h"
 #include "utilities/frequency_counter.h"
-#include "kinemtaic_models/kinematic_model_delta3d.h"
+#include "kinematic_models/kinematic_model_delta3d.h"
 #include "version.h"
 #include "hw_config.h"
 #include "LittleFS.h"

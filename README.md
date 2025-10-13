@@ -19,6 +19,12 @@ A 'magnetic gearing' approach increases the resolution of the low-cost magnetic 
 The device can be controlled via simple G-Code commands over a USB serial interface and is thus easily integrated into other projects.
 The firmware implements a complete motion planning stack with look-ahead for smooth and accurate path following capabilities.
 
+
+## 💬 NEW: Discord Server
+
+Visit the projects community [Discord Server](https://discord.gg/maRvMVpa2Q) to meet and discuss subjects related to the project,
+get help for the build or share ideas and applications. 
+
 ## 🐍 NEW: Python-API
 
 The lightweight Python API handles all serial communication and provides convenient command execution and debug message printing.
@@ -162,6 +168,15 @@ The client must wait for an acknowledgment from the previous command before send
 | `M204 L A`     | Set linear and angular acceleration. <br>• `L`: linear acceleration <br>• `A`: angular acceleration |
 
 *Note: The communication protocol uses 3D vectors for rotations. The direction represents the rotation axis and the length of the vector represents the angle of rotation around the axis.
+
+## ❤️ Support
+
+If you'd like to support this project, consider the following:
+
+- **Contribute to the build guide** – Help improve or expand the build instructions by submitting pull requests or opening issues with suggestions.
+- **Characterize typical radial stepper motor shaft error motion** – Measure radial error motion of the shaft of multiple Nema-17 stepper motors (see Cylos Garage for more information about the subject: https://www.youtube.com/watch?v=gt2gK-oxy5s).
+- **Give feedback on the build experience** – Let us know what worked, what didn’t, and how the process could be smoother for others.
+- **Support the project on Ko-fi** – If you find this project valuable, you can support it financially via [Ko-fi](https://ko-fi.com/diffractionlimited) ☕.
 
 ## Youtube Video
 [![Watch the video](images/thumbnail.jpg)](https://youtu.be/MgQbPdiuUTw)
