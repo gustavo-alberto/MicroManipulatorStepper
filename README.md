@@ -126,7 +126,7 @@ For usual winding resistance of your motors, the device should be powered by $${
 
 ## ⚙ Bill of Materials (BOM)
 
-See the full [BOM here](BOM.md).
+See the full [BOM here](documentation/bom/bom.md).
 
 ## ⚙ Firmware
 
