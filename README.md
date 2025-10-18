@@ -114,7 +114,7 @@ Please check the dimensions of your build against the values set in the construc
 
 ## ⚙ Electronics
 
-IMPORTANT: If you fabricated PCB verion v1.2 (see version label on the board) you need to drill out a misplaced via on diode D1 that shorts 5V rail to ground (See [repair image](electronics/pcb_v1.2_fix.jpg) ). The problem was fixed in v1.3.
+IMPORTANT: If you fabricated PCB version v1.2 (see version label on the board) you need to drill out a misplaced via on diode D1 that shorts 5V rail to ground (See [repair image](electronics/pcb_v1.2_fix.jpg) ). The problem was fixed in v1.3.
 
 The electronics are designed in **KiCAD** and only commonly available modules (motor drivers and MCU boards) are used and connected by a simple PCB. No SMD soldering is required to populate the board to make the build extra accessible.
 For usual winding resistance of your motors, the device should be powered by $${\color{lightgreen} 5V-6V }$$ (2A) to keep current and heating to a reasonable level.
@@ -123,6 +123,10 @@ For usual winding resistance of your motors, the device should be powered by $${
   <img src="images/Kicad-Board.jpg" alt="Image 1" style="flex: 1; object-fit: contain; height: 10vw;">
   <img src="images/ControllerPCB.jpg" alt="Image 2" style="flex: 1; object-fit: contain; height: 10vw;">
 </div>
+
+## ⚙ Bill of Materials (BOM)
+
+See the full [BOM here](documentation/bom/bom.md).
 
 ## ⚙ Firmware
 
