@@ -20,12 +20,12 @@ The device can be controlled via simple G-Code commands over a USB serial interf
 The firmware implements a complete motion planning stack with look-ahead for smooth and accurate path following capabilities.
 
 
-## 💬 NEW: Discord Server
+## 💬 Discord Server
 
 Visit the projects community [Discord Server](https://discord.gg/maRvMVpa2Q) to meet and discuss subjects related to the project,
 get help for the build or share ideas and applications. 
 
-## 🐍 NEW: Python-API
+## 🐍 Python-API
 
 The lightweight Python API handles all serial communication and provides convenient command execution and debug message printing.
 The interface includes functions to home, move, and calibrate the device, as well as to query device information.
@@ -71,7 +71,7 @@ set_max_acceleration(linear_accel, angular_accel)
 set_servo_parameter(pos_kp, pos_ki, vel_kp, vel_ki, vel_filter_tc)
 ```
 
-## ✨ NEW: Firmware v1.0.1
+## ✨ Firmware v1.0.1
 
 This update improves calibration, homing, logging, and adds several new G-Code commands.
 
