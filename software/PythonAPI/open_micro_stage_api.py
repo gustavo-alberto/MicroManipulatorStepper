@@ -305,9 +305,21 @@ class OpenMicroStageInterface:
         return res
 
     def calibrate_joint(self, joint_index: int, save_result: bool):
-        cmd = f"M56 J{joint_index}"+(" S" if save_result else "")
+        """
+        Calibrates the given joint and returns the measured data as three lists containing:
+            data[0]: list of motor angles
+            data[1]: list of electric field angles
+            data[2]: list of raw encoder counts
+        :param joint_index:
+        :param save_result:
+        :return:
+        """
+        cmd = f"M56 J{joint_index} P"
+        if save_result: cmd += ' S'
         res, msg = self.serial.send_command(cmd, 30)
-        return res
+
+        calibration_data = self._parse_table_data(msg, 3)
+        return res, calibration_data
 
     def move_to(self, x, y, z, f, move_immediately=False, blocking=True, timeout=1):
         """
@@ -409,5 +421,19 @@ class OpenMicroStageInterface:
 
     def send_command(self, cmd: str, timeout_s: float=5):
         res, msg = self.serial.send_command(cmd, timeout_s)
-        return res
+        return res, msg
 
+    @staticmethod
+    def _parse_table_data(data_string, cols):
+        # Parse the data
+        data = [[] for _ in range(cols)]
+
+        for line in data_string.strip().splitlines():
+            parts = line.strip().split(',')
+            if len(parts) != cols:
+                continue  # skip malformed lines
+            numbers = map(float, parts)
+            for i, n in enumerate(numbers):
+                data[i].append(n)
+
+        return data
