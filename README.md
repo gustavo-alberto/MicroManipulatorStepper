@@ -19,13 +19,19 @@ A 'magnetic gearing' approach increases the resolution of the low-cost magnetic 
 The device can be controlled via simple G-Code commands over a USB serial interface and is thus easily integrated into other projects.
 The firmware implements a complete motion planning stack with look-ahead for smooth and accurate path following capabilities.
 
+## Getting Started
 
-## 💬 NEW: Discord Server
+Below is a list of high level steps you can follow if you want to replicate the project. 
+If you have questions or problems with the build or just want to discuss subjects related to the project, 
+joint the projects community [Discord Server](https://discord.gg/maRvMVpa2Q').
 
-Visit the projects community [Discord Server](https://discord.gg/maRvMVpa2Q) to meet and discuss subjects related to the project,
-get help for the build or share ideas and applications. 
+1. Read this Document and watch the linked videos
+2. Get the parts listed in [Bill of Materials](documentation/bom/bom.md)
+3. Build the device and electronics
+4. Upload firmware using VSCode with PlattformIO plugin
+5. Calibrate axis
 
-## 🐍 NEW: Python-API
+## 🐍 Python-API
 
 The lightweight Python API handles all serial communication and provides convenient command execution and debug message printing.
 The interface includes functions to home, move, and calibrate the device, as well as to query device information.
@@ -71,7 +77,7 @@ set_max_acceleration(linear_accel, angular_accel)
 set_servo_parameter(pos_kp, pos_ki, vel_kp, vel_ki, vel_filter_tc)
 ```
 
-## ✨ NEW: Firmware v1.0.1
+## ✨ Firmware v1.0.1
 
 This update improves calibration, homing, logging, and adds several new G-Code commands.
 
@@ -114,7 +120,7 @@ Please check the dimensions of your build against the values set in the construc
 
 ## ⚙ Electronics
 
-IMPORTANT: If you fabricated PCB verion v1.2 (see version label on the board) you need to drill out a misplaced via on diode D1 that shorts 5V rail to ground (See [repair image](electronics/pcb_v1.2_fix.jpg) ). The problem was fixed in v1.3.
+IMPORTANT: If you fabricated PCB version v1.2 (see version label on the board) you need to drill out a misplaced via on diode D1 that shorts 5V rail to ground (See [repair image](electronics/pcb_v1.2_fix.jpg) ). The problem was fixed in v1.3.
 
 The electronics are designed in **KiCAD** and only commonly available modules (motor drivers and MCU boards) are used and connected by a simple PCB. No SMD soldering is required to populate the board to make the build extra accessible.
 For usual winding resistance of your motors, the device should be powered by $${\color{lightgreen} 5V-6V }$$ (2A) to keep current and heating to a reasonable level.
@@ -123,6 +129,10 @@ For usual winding resistance of your motors, the device should be powered by $${
   <img src="images/Kicad-Board.jpg" alt="Image 1" style="flex: 1; object-fit: contain; height: 10vw;">
   <img src="images/ControllerPCB.jpg" alt="Image 2" style="flex: 1; object-fit: contain; height: 10vw;">
 </div>
+
+## ⚙ Bill of Materials (BOM)
+
+See the full [BOM here](documentation/bom/bom.md).
 
 ## ⚙ Firmware
 
