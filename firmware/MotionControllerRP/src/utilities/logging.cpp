@@ -60,6 +60,13 @@ void Logger::error(const char* fmt, ...) {
   }
 }
 
+void Logger::raw(const char* fmt, ...) {
+  va_list args;
+  va_start(args, fmt);
+  log(ELogLevel::NONE, fmt, args);
+  va_end(args);
+}
+
 void Logger::log(ELogLevel level, const char* fmt, va_list args) {
   char buf[128];  // Adjust size as needed
   vsnprintf(buf, sizeof(buf), fmt, args);

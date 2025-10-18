@@ -15,6 +15,7 @@
 #define LOG_INFO(...) Logger::instance().info(__VA_ARGS__)
 #define LOG_WARNING(...) Logger::instance().warn(__VA_ARGS__)
 #define LOG_ERROR(...) Logger::instance().error(__VA_ARGS__)
+#define LOG_RAW(...) Logger::instance().raw(__VA_ARGS__)
 
 //*** ENUM ******************************************************************************
 
@@ -39,6 +40,7 @@ class Logger {
     void info(const char* fmt, ...);
     void warn(const char* fmt, ...);
     void error(const char* fmt, ...);
+    void raw(const char* fmt, ...);
 
   private:
     Logger() = default;
