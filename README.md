@@ -130,10 +130,6 @@ For usual winding resistance of your motors, the device should be powered by $${
   <img src="images/ControllerPCB.jpg" alt="Image 2" style="flex: 1; object-fit: contain; height: 10vw;">
 </div>
 
-## ⚙ Bill of Materials (BOM)
-
-See the full [BOM here](documentation/bom/bom.md).
-
 ## ⚙ Firmware
 
 The firmware is written in C++ and takes some inspiration from the 'SimpleFOC' project. It aims to be streamlined and readable without any extra fuss, focusing on the hardware used in this project.
