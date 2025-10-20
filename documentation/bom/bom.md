@@ -29,6 +29,7 @@
 ## 3D Printing
 | Name | Qty | Description | Comments | Image |
 |------|-----|-------------|----------|-------|
+| Motor Horn | 3 |  | 0.4 mm+ nozzle may require post-processing | ![Motor Horn](images/MotorHorn.png)|
 | WireFlexureMount | 3 |  | 0.4 mm+ nozzle may require post-processing | ![Wire Flexure Mount](images/WireFlexureMount.png)|
 | RubberBandCollet | 3 |  | 0.4 mm+ nozzle may require post-processing | ![Rubber Band Collet](images/RubberBandCollet.png)|
 | BallJointMount | 3 |  | 0.4 mm+ nozzle may require post-processing | ![Ball Joint Mount](images/BallJointMount.png)|
