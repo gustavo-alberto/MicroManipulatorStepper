@@ -93,7 +93,7 @@ class Robot : public ICommandProcessor {
 
     void init();
     void calibrate();
-    bool home(uint8_t joint_mask=255);
+    bool home(uint8_t joint_mask, float retract_angles[NUM_JOINTS]);
     bool calibrate_joint(int joint_idx, bool store_calibration, bool print_measurements);
     void enable_servo_control(bool enable);  // enables joint servo controll if homed and calibrated
 

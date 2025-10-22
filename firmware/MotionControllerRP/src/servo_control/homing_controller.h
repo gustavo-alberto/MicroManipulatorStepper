@@ -25,10 +25,30 @@ class HomingController {
   public:
     HomingController();
 
-    // Starts the homing cycle, motor_velocity can be negative and defines the homing direction.
+    // Starts a blocking homing cycle, motor_velocity can be negative and defines the homing direction.
     // WARNING: Servo loop updates (including encoder reads) must be completely disabled during homing.
-    bool run_blocking(ServoController* servo_controller, float motor_velocity, float search_range, float current);
-    void start(ServoController* servo_controller, float motor_velocity, float search_range, float current);
+    // @param servo_controller: servo controller instance used for homing
+    // @param search_range_angle: search range angle for finding the endstop 
+    // @param current: motor current factor used during homing, in range [0..1]
+    // @param encoder_angle_to_motor_angle: conversion factor from encoder angle to motor angle
+    // @param retract_angle_rad: retract angle after homing, default is used if negative values are provided 
+    bool run_blocking(ServoController* servo_controller, 
+                      float motor_velocity, 
+                      float search_range_angle, 
+                      float current,
+                      float encoder_angle_to_motor_angle,
+                      float retract_angle_rad=-1.0f);
+                      
+    // Starts a non blocking homing cycle, motor_velocity can be negative and defines the homing direction.
+    // WARNING: Servo loop updates (including encoder reads) must be completely disabled during homing.
+    // Note: same parameter as 'run_blocking()' 
+    void start(ServoController* servo_controller, 
+               float motor_velocity, 
+               float search_range, 
+               float current,
+               float encoder_angle_to_motor_angle,
+               float retract_angle_rad=-1.0f);
+
     void update();
     void finalize();
 
@@ -55,6 +75,7 @@ class HomingController {
     float field_angle_search_range = 0.0f;
     float homing_current = 0.0f;
     float initial_current = 0.0f;
+    float retract_field_angle = 0.0f;
     float retract_field_velocity = 0.0f;
 
     // State machine

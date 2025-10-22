@@ -1,17 +1,39 @@
+#pragma once
+#include "utilities/math_constants.h"
+
+//--- MOTORS ------------------------------------------------------------------
+
 // motor pole pair count
 //  * 100 for 0.9deg stepper motors
 //  * 50  for 1.8deg stepper motors
-#define MOTOR1_POLE_PAIRS 100
-#define MOTOR2_POLE_PAIRS 100
-#define MOTOR3_POLE_PAIRS 100
+constexpr float MOTOR1_POLE_PAIRS = 100;
+constexpr float MOTOR2_POLE_PAIRS = 100;
+constexpr float MOTOR3_POLE_PAIRS = 100;
 
-#define CALIBRATION_RANGE 95        // degrees from home position
-#define CALIBRATION_FIELD_VELOCITY 40.0f
+//--- ENCODERS ----------------------------------------------------------------
 
-#define HOMING_VELOCITY   1.0f        // rad per s
-#define HOMING_CURRENT    0.15f       // range 0..1
-#define HOMING_FINISH_POS 0.5f        // in rad
+// Conversion factor from encoder angle (one 2pi period every two magnets) to rotor angle.
+// Used when the system can not rely on calibration data being present (e.g. during homing)
+constexpr float ENCODER_MAGNET_PITCH = 3.0f;    // [mm]
+constexpr float ENCODER_MAGNET_RADIUS = 30.0f;  // [mm]
+constexpr float ENCODER_ANGLE_TO_ROTOR_ANGLE = (ENCODER_MAGNET_PITCH*2.0f) / 
+                                               (ENCODER_MAGNET_RADIUS * Constants::TWO_PI_F);
 
+//--- HOMING ------------------------------------------------------------------
+
+constexpr float HOMING_VELOCITY   = 1.0f;        // rad per s
+constexpr float HOMING_CURRENT    = 0.15f;       // range 0..1
+constexpr float HOMING_FINISH_POS = 0.5f;        // in rad
+
+//--- CALIBRATION -------------------------------------------------------------
+
+// degrees from home position
+constexpr float CALIBRATION_RANGE = 95; 
+
+// velocity of the magnetic field during calibration (lower is more accurate)
+constexpr float CALIBRATION_FIELD_VELOCITY = 40.0f; 
+
+//--- PINS --------------------------------------------------------------------
 
 // #define SINGLE_AXIS_BOARD
 #ifndef SINGLE_AXIS_BOARD
@@ -76,23 +98,3 @@
   #define PIN_ENCODER_MISO 0
   #define PIN_ENCODER_MOSI 3
 #endif
-
-// test setup
-/*
-#define PIN_PWM_A_POS  2
-#define PIN_PWM_A_NEG  3
-#define PIN_PWM_B_POS  1
-#define PIN_PWM_B_NEG  0
-#define PIN_PWM_A_EN   5
-#define PIN_PWM_B_EN   5
-#define PIN_PWMAB      4
-
-// I2C Encoder
-//#define PIN_ENCODER_SDA 28
-//#define PIN_ENCODER_SCL 29
-
-#define PIN_ENCODER_CS 17
-#define PIN_ENCODER_SCK 18
-#define PIN_ENCODER_MISO 16
-#define PIN_ENCODER_MOSI 19
-*/

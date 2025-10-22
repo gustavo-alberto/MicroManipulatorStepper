@@ -63,7 +63,8 @@ bool RobotJoint::calibrate(bool print_measurements) {
 
   HomingController homing_controller;
   bool homing_ok = homing_controller.run_blocking(servo_controller, -HOMING_VELOCITY, 
-                                                  360.0f*DEG_TO_RAD, HOMING_CURRENT);
+                                                  360.0f*DEG_TO_RAD, HOMING_CURRENT,
+                                                  ENCODER_ANGLE_TO_ROTOR_ANGLE);
   if(homing_ok == false) {
     LOG_ERROR("Joint-%i: Calibration failed due to unsuccessful homing sequence", joint_idx);
     return false;
@@ -402,7 +403,7 @@ bool Robot::check_all_joints_ready() {
   return all_ready;
 }
 
-bool Robot::home(uint8_t joint_mask) {
+bool Robot::home(uint8_t joint_mask, float retract_angles[NUM_JOINTS]) {
   HomingController homing_controller[NUM_JOINTS];
   LOG_INFO("homing...");
   enable_servo_control(false);
@@ -416,7 +417,8 @@ bool Robot::home(uint8_t joint_mask) {
     if(((joint_mask>>i)&1) == 0) continue;
     LOG_DEBUG("start homing axis %i", i);
     homing_controller[i].start(joints[i]->servo_controller, 
-                               -HOMING_VELOCITY, 360.0f*DEG_TO_RAD, HOMING_CURRENT);
+                               -HOMING_VELOCITY, 360.0f*DEG_TO_RAD, HOMING_CURRENT,
+                               ENCODER_ANGLE_TO_ROTOR_ANGLE, retract_angles[i]);
   }
 
   // run homing controllers
@@ -760,17 +762,30 @@ void Robot::process_set_servo_parameter_command(const GCodeCommand& cmd, std::st
 }
 
 void Robot::process_home_command(const GCodeCommand& cmd, std::string& reply) {
+  float retract_angles[NUM_JOINTS] = {-1.0f};
+
   // TODO: check parameter and build joint mask
   uint8_t joint_mask = 0;
   for(int i=0; i<NUM_JOINTS; i++) {
-    if(cmd.has_word('A'+i))
+    char word = 'A'+i;
+    if(cmd.has_word(word)) {
       joint_mask |= 1<<i;
+      float retract_angle = cmd.get_value(word) * Constants::DEG2RAD;
+      if(retract_angle > 1e-3f)
+        retract_angles[i] = retract_angle;
+    }
+  }
+
+  std::string supported_words = "A,B,C,D,E,F";
+  if(cmd.contains_unsupported_words(supported_words+",G,M")) {
+    reply = "error: Unsupported parameter found. Only [" + supported_words + "] are supported\n";
+    return;
   }
 
   if(joint_mask == 0)
     joint_mask = 255;
 
-  bool ok = home(joint_mask);
+  bool ok = home(joint_mask, retract_angles);
 
   reply = ok ? "ok\n" : "error\n";
 }

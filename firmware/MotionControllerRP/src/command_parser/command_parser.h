@@ -10,6 +10,8 @@
 
 //*** CLASS *****************************************************************************
 
+static constexpr int LETTER_COUNT = 26;
+
 //--- GCodeCommand ----------------------------------------------------------------------
 
 class GCodeCommand {
@@ -23,10 +25,12 @@ class GCodeCommand {
     float               get_value(char word) const;
     float               get_value(char word, float default_value) const;
     bool                has_word(char word) const;
+    int                 get_word_count() const;
+    bool                contains_unsupported_words(const std::string& supported_words_str) const;
 
   private:
     std::string command;
-    float word_values[26];
+    float word_values[LETTER_COUNT];
 };
 
 //--- ICommandProcessor -----------------------------------------------------------------

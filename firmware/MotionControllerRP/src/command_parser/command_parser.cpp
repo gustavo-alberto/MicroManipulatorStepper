@@ -57,6 +57,37 @@ bool GCodeCommand::has_word(char word) const {
   return false;
 }
 
+int GCodeCommand::get_word_count() const {
+  int c = 0;
+  for(int i=0; i<LETTER_COUNT; i++) {
+    if(std::isnan(word_values[i]))
+      c++;
+  }
+  return c;
+}
+
+bool GCodeCommand::contains_unsupported_words(const std::string& supported_words_str) const {
+    // Parse supported words from the string into a fixed-size lookup table
+    bool supported[LETTER_COUNT] = {false};
+
+    // Parse the supported letters from the comma-separated string
+    for (size_t i = 0; i < supported_words_str.length(); ++i) {
+        char c = supported_words_str[i];
+        if (c >= 'A' && c <= 'Z')
+            supported[c - 'A'] = true;
+    }
+
+    // Now check which words are used in the command and not supported
+    for (int i = 0; i < LETTER_COUNT; ++i) {
+        char word = 'A' + i;
+        if (has_word(word) && !supported[i]) {
+            return true;  // Found an unsupported word
+        }
+    }
+
+    return false;  // All words used in command are supported
+}
+
 //--- CommandParser ---------------------------------------------------------------------
 
 CommandParser::CommandParser() : buffer_index(0), command_processor(nullptr) {
@@ -120,6 +151,9 @@ bool CommandParser::parse_line(const char* line) {
   // Parse remaining words (e.g., X1.0, Y2.5, F200)
   while ((token = strtok_r(nullptr, " ", &saveptr))) {
     if (token[0] >= 'A' && token[0] <= 'Z') {
+      if(token[1] == '\0')
+        command.set_value(token[0], 0.0f);
+      else
       command.set_value(token[0], strtof(token + 1, nullptr));
     } else {
       command_processor->send_reply("error: invalid parameter\n");
