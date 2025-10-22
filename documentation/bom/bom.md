@@ -30,7 +30,7 @@
 | Name | Qty | Description | Comments | Image |
 |------|-----|-------------|----------|-------|
 | WireFlexureMount | 3 |  | 0.4 mm+ nozzle may require post-processing | ![Wire Flexure Mount](images/WireFlexureMount.png)|
-| RubberBandCollet | 3 |  | 0.4 mm+ nozzle may require post-processing | ![Rubber Band Collet](images/RubberBandCollet.png)|
+| RubberBandCollet | 6 |  | 0.4 mm+ nozzle may require post-processing | ![Rubber Band Collet](images/RubberBandCollet.png)|
 | BallJointMount | 3 |  | 0.4 mm+ nozzle may require post-processing | ![Ball Joint Mount](images/BallJointMount.png)|
 | Motor Mount | 3 |  |  | ![Motor Mount](images/MotorMount.png)|
 | End Effector | 1 |  |  | ![End Effector](images/EndEffector.png)|
