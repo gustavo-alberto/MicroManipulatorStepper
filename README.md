@@ -23,7 +23,7 @@ The firmware implements a complete motion planning stack with look-ahead for smo
 
 Below is a list of high level steps you can follow if you want to replicate the project. 
 If you have questions or problems with the build or just want to discuss subjects related to the project, 
-joint the projects community [Discord Server](https://discord.gg/maRvMVpa2Q').
+joint the projects community [Discord Server](https://discord.gg/maRvMVpa2Q).
 
 1. Read this Document and watch the linked videos
 2. Get the parts listed in [Bill of Materials](documentation/bom/bom.md)
