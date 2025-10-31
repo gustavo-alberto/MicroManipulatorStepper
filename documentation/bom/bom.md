@@ -30,7 +30,7 @@
 | Name | Qty | Description | Comments | Image |
 |------|-----|-------------|----------|-------|
 | Motor Horn | 3 |  | 0.4 mm+ nozzle may require post-processing | ![Motor Horn](images/MotorHorn.png)|
-| RubberBandCollet | 6 |  | 0.4 mm nozzle, 0.1mm Layer height + may require post-processing | ![Rubber Band Collet](images/RubberBandCollet.png)|
+| RubberBandCollet | 12 |  | 0.4 mm nozzle, 0.1mm Layer height + may require post-processing | ![Rubber Band Collet](images/RubberBandCollet.png)|
 | BallJointMount | 6 |  | 0.4 mm nozzle, 0.1mm Layer height + may require post-processing | ![Ball Joint Mount](images/BallJointMount.png)|
 | Motor Mount | 3 |  |  | ![Motor Mount](images/MotorMount.png)|
 | End Effector | 1 |  |  | ![End Effector](images/EndEffector.png)|
